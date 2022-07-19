@@ -34,11 +34,7 @@ export const Login = () => {
          uid: "na",
       };
       dispatch(setSession({ ...session, user: userObj }));
-      navigate(`/home`);
-   };
-
-   const login = (): void => {
-      navigate(`/home`);
+      navigate(`/dashboard`);
    };
 
    return (
