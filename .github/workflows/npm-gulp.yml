@@ -21,10 +21,10 @@ jobs:
          - name: Build
            run: |
               npm install
-              echo install complete
-              npm run build
-              echo  build complete
+              echo "  ------install complete"
+              npm CI=false npm run build
+              echo "  ------build complete"
               cd build
-              echo in build folder
+              echo " ------in build folder"
               cp ./* -R ../../../../../../public
-              echo copy complete
+              echo " ------copy complete"
