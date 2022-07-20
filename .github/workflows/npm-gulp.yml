@@ -22,7 +22,7 @@ jobs:
            run: |
               npm install
               echo "  ------install complete"
-              npm CI=false npm run build
+              CI=false npm run build
               echo "  ------build complete"
               cd build
               echo " ------in build folder"
