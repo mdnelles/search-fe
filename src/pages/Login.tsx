@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSession } from "../features/session/sessionSlice";
 import { isValidEmail, isValidPassword } from "../utilities/validate";
 import { apiPost } from "../utilities/ApiRequest";
+import { setSnackbar } from "../features/snackbar/snackbarSlice";
 
 const theme = createTheme();
 
@@ -33,8 +34,13 @@ export const Login = () => {
          const res = await apiPost("/user/login", { email, password });
          console.log(res.data);
          if (res.data.err) {
-            console.log(
-               "login failed \nemail: " + email + "password: " + password
+            dispatch(
+               setSnackbar({
+                  msg: `login failed email: ${email} & password: ${password} `,
+                  isOpen: true,
+                  severity: "error",
+                  duration: 5500,
+               })
             );
          } else {
             const user = {
@@ -45,6 +51,14 @@ export const Login = () => {
             navigate(`/dashboard`);
          }
       } else {
+         dispatch(
+            setSnackbar({
+               msg: `login failed email: ${email} & password: ${password} `,
+               isOpen: true,
+               severity: "error",
+               duration: 5500,
+            })
+         );
          console.log("login failed \nemail: " + email + "password" + password);
       }
    };

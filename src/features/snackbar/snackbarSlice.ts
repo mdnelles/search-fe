@@ -21,9 +21,13 @@ export const snackbarSlice = createSlice({
    // The `reducers` field lets us define reducers and generate associated actions
    reducers: {
       setSnackbar: (state, action: PayloadAction<any>) => {
-         const o: object | any = action.payload;
+         const { msg, severity, duration, isOpen } = action.payload;
          try {
-            state = action.payload;
+            //state = action.payload;
+            state.msg = msg;
+            state.isOpen = isOpen;
+            state.severity = severity;
+            state.duration = duration;
          } catch (error) {
             console.log(error);
          }

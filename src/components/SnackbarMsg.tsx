@@ -3,16 +3,18 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch } from "../app/hooks";
+import Alert from "@mui/material/Alert";
+import { setSnackbar } from "../features/snackbar/snackbarSlice";
+import { useEffect } from "react";
 
-export default function SnackbarMsg() {
+interface SnackMsgProps {
+   snackbarState: any;
+}
+
+export const SnackbarMsg = (props: SnackMsgProps) => {
+   const { snackbarState } = props;
    const dispatch = useAppDispatch();
-   let session: any = useAppSelector((state) => state.session);
-   const [open, setOpen] = React.useState(false);
-
-   const handleClick = () => {
-      setOpen(true);
-   };
 
    const handleClose = (
       event: React.SyntheticEvent | Event,
@@ -22,7 +24,7 @@ export default function SnackbarMsg() {
          return;
       }
 
-      setOpen(false);
+      dispatch(setSnackbar({ ...snackbarState, isOpen: false }));
    };
 
    const action = (
@@ -41,16 +43,26 @@ export default function SnackbarMsg() {
       </React.Fragment>
    );
 
+   useEffect(() => {
+      console.log("UE inside snack");
+      console.log(snackbarState);
+   }, []);
+
    return (
-      <div>
-         <Button onClick={handleClick}>Open simple snackbar</Button>
+      <>
          <Snackbar
-            open={open}
-            autoHideDuration={6000}
+            open={snackbarState.isOpen}
+            autoHideDuration={snackbarState.duration}
             onClose={handleClose}
-            message='Note archived'
-            action={action}
-         />
-      </div>
+         >
+            <Alert
+               onClose={handleClose}
+               severity={snackbarState.severity}
+               sx={{ width: "100%" }}
+            >
+               {snackbarState.msg}
+            </Alert>
+         </Snackbar>
+      </>
    );
-}
+};
