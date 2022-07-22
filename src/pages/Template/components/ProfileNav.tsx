@@ -3,6 +3,13 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
 import React from "react";
+import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useNavigate } from "react-router-dom";
+import { setSnackbar } from "../../../features/snackbar/snackbarSlice";
+import {
+   clearSession,
+   setSession,
+} from "../../../features/session/sessionSlice";
 
 interface ProfileNavProps {
    mopen: any;
@@ -11,11 +18,30 @@ interface ProfileNavProps {
 }
 
 export const ProfileNav = (): any => {
+   const navigate = useNavigate();
+   const dispatch = useAppDispatch();
+   let session: any = useAppSelector((state) => state.session);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
 
    const handleMenuClose = () => {
       setAnchorEl(null);
+   };
+
+   const handleLogout = (
+      event: React.MouseEvent<HTMLButtonElement> | any
+   ): void => {
+      dispatch(
+         setSnackbar({
+            msg: `Logging out`,
+            isOpen: true,
+            severity: "info",
+            duration: 5500,
+         })
+      );
+      setAnchorEl(event.currentTarget);
+      dispatch(clearSession());
+      navigate(`/`);
    };
 
    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,7 +70,7 @@ export const ProfileNav = (): any => {
          >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
             <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+            <MenuItem onClick={(event) => handleLogout(event)}>Logout</MenuItem>
          </Menu>
       </>
    );

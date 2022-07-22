@@ -1,10 +1,10 @@
 import React from "react";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
 
-interface SearchProps {
+interface NoteProps {
    text: string;
 }
 
-export const Search = (props: SearchProps): any => {
+export const Note = (props: NoteProps): any => {
    return <DashboardTemplate>Search</DashboardTemplate>;
 };

@@ -31,12 +31,20 @@ export const Login = () => {
       const password = data.get("password");
 
       if (isValidEmail(data.get("email")) && isValidPassword(password)) {
+         dispatch(
+            setSnackbar({
+               msg: `Testing Credentials`,
+               isOpen: true,
+               severity: "info",
+               duration: 5500,
+            })
+         );
          const res = await apiPost("/user/login", { email, password });
-         console.log(res.data);
+
          if (res.data.err) {
             dispatch(
                setSnackbar({
-                  msg: `login failed email: ${email} & password: ${password} `,
+                  msg: `login failed email: ${email} & password: ***** `,
                   isOpen: true,
                   severity: "error",
                   duration: 5500,
@@ -53,7 +61,7 @@ export const Login = () => {
       } else {
          dispatch(
             setSnackbar({
-               msg: `login failed email: ${email} & password: ${password} `,
+               msg: `You must enter a valid email and password `,
                isOpen: true,
                severity: "error",
                duration: 5500,
