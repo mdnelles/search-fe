@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
 import sessionReducer from "../features/session/sessionSlice";
+import snackbarReducer from "../features/snackbar/snackbarSlice";
 
 export const store = configureStore({
    reducer: {
       counter: counterReducer,
       session: sessionReducer,
+      snackbar: snackbarReducer,
    },
 });
 

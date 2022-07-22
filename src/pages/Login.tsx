@@ -11,9 +11,8 @@ import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSession } from "../features/session/sessionSlice";
-import { useState } from "react";
 import { isValidEmail, isValidPassword } from "../utilities/validate";
-import { apiGet, apiPost, postAction } from "../utilities/ApiRequest";
+import { apiPost } from "../utilities/ApiRequest";
 
 const theme = createTheme();
 
