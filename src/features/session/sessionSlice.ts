@@ -52,6 +52,8 @@ export const sessionSlice = createSlice({
    // The `reducers` field lets us define reducers and generate associated actions
    reducers: {
       setSession: (state, action: PayloadAction<any>) => {
+         console.log("------action-----");
+         console.log(action);
          const o: object | any = action.payload;
          try {
             state.user = o.user;

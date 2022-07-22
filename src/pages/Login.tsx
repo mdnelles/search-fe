@@ -11,30 +11,43 @@ import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSession } from "../features/session/sessionSlice";
+import { useState } from "react";
+import { isValidEmail, isValidPassword } from "../utilities/validate";
+import { apiGet, apiPost, postAction } from "../utilities/ApiRequest";
 
 const theme = createTheme();
 
 export const Login = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
+
    let session: any = useAppSelector((state) => state.session);
 
-   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
-      console.log({
-         email: data.get("email"),
-         password: data.get("password"),
-      });
-      let userObj: object = {
-         token: new Date(),
-         email: data.get("email"),
-         displayName: "na",
-         photoUrl: "na",
-         uid: "na",
-      };
-      dispatch(setSession({ ...session, user: userObj }));
-      navigate(`/dashboard`);
+
+      const email = data.get("email");
+      const password = data.get("password");
+
+      if (isValidEmail(data.get("email")) && isValidPassword(password)) {
+         const res = await apiPost("/user/login", { email, password });
+         console.log(res.data);
+         if (res.data.err) {
+            console.log(
+               "login failed \nemail: " + email + "password: " + password
+            );
+         } else {
+            const user = {
+               email,
+               token: res.data.token,
+            };
+            dispatch(setSession({ ...session, user }));
+            navigate(`/dashboard`);
+         }
+      } else {
+         console.log("login failed \nemail: " + email + "password" + password);
+      }
    };
 
    return (
@@ -77,7 +90,6 @@ export const Login = () => {
                      fullWidth
                      name='password'
                      label='Password'
-                     type='password'
                      id='password'
                      autoComplete='current-password'
                   />
