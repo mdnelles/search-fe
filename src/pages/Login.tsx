@@ -33,7 +33,7 @@ export const Login = () => {
       if (isValidEmail(data.get("email")) && isValidPassword(password)) {
          dispatch(
             setSnackbar({
-               msg: `Testing Credentials`,
+               msg: `Testing Credentials...`,
                isOpen: true,
                severity: "info",
                duration: 5500,
