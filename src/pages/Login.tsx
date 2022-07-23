@@ -14,17 +14,31 @@ import { setSession } from "../features/session/sessionSlice";
 import { isValidEmail, isValidPassword } from "../utilities/validate";
 import { apiPost } from "../utilities/ApiRequest";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 
 const theme = createTheme();
 
 export const Login = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
-
    let session: any = useAppSelector((state) => state.session);
+   const [loading, setLoading] = React.useState(false);
+   const [success, setSuccess] = React.useState(false);
+
+   const buttonSx = {
+      ...(success && {
+         "bgcolor": green[500],
+         "&:hover": {
+            bgcolor: green[700],
+         },
+      }),
+   };
 
    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      setSuccess(false);
+      setLoading(true);
       const data = new FormData(event.currentTarget);
 
       const email = data.get("email");
@@ -58,16 +72,21 @@ export const Login = () => {
             dispatch(setSession({ ...session, user }));
             navigate(`/dashboard`);
          }
+         setSuccess(true);
+         setLoading(false);
       } else {
-         dispatch(
-            setSnackbar({
-               msg: `You must enter a valid email and password `,
-               isOpen: true,
-               severity: "error",
-               duration: 5500,
-            })
-         );
-         console.log("login failed \nemail: " + email + "password" + password);
+         setTimeout(() => {
+            setSuccess(true);
+            setLoading(false);
+            dispatch(
+               setSnackbar({
+                  msg: `You must enter a valid email and password `,
+                  isOpen: true,
+                  severity: "error",
+                  duration: 5500,
+               })
+            );
+         }, 500);
       }
    };
 
@@ -114,15 +133,30 @@ export const Login = () => {
                      id='password'
                      autoComplete='current-password'
                   />
-                  <Button
-                     type='submit'
-                     fullWidth
-                     variant='contained'
-                     sx={{ mt: 3, mb: 2 }}
-                     onClick={() => handleSubmit}
-                  >
-                     Sign In
-                  </Button>
+                  <Box sx={{ m: 1, position: "relative" }}>
+                     <Button
+                        type='submit'
+                        fullWidth
+                        variant='contained'
+                        sx={{ mt: 3, mb: 2 }}
+                        disabled={loading}
+                        onClick={() => handleSubmit}
+                     >
+                        Sign In
+                     </Button>
+                     {loading && (
+                        <CircularProgress
+                           size={24}
+                           sx={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              marginTop: "-12px",
+                              marginLeft: "-12px",
+                           }}
+                        />
+                     )}
+                  </Box>
                </Box>
             </Box>
          </Container>
