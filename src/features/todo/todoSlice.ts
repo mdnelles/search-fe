@@ -9,12 +9,12 @@ interface Arr {
    due: string;
 }
 
-export interface TitlesState {
+export interface TodoState {
    arr: Arr[];
    init: boolean;
 }
 
-const initialState: TitlesState = {
+const initialState: TodoState = {
    arr: [],
    init: false,
 };
@@ -24,7 +24,7 @@ export const todoSlice = createSlice({
    initialState,
 
    reducers: {
-      setTitles: (state, action: PayloadAction<any>) => {
+      setTodo: (state, action: PayloadAction<any>) => {
          try {
             console.log(action.payload);
             state.arr = action.payload.arr;
@@ -33,12 +33,12 @@ export const todoSlice = createSlice({
             console.log(error);
          }
       },
-      clearTitles: (state) => initialState,
+      clearTodo: (state) => initialState,
    },
 });
 
-export const { setTitles, clearTitles } = todoSlice.actions;
+export const { setTodo, clearTodo } = todoSlice.actions;
 
-export const selectTitles = (state: RootState) => state.todo;
+export const selectTodo = (state: RootState) => state.todo;
 
 export default todoSlice.reducer;

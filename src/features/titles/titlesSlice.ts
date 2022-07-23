@@ -25,8 +25,8 @@ export const titlesSlice = createSlice({
       setTitles: (state, action: PayloadAction<any>) => {
          try {
             console.log(action.payload);
-            state.arr = action.payload.arr;
             state.init = action.payload.init;
+            state.arr = action.payload.arr;
          } catch (error) {
             console.log(error);
          }

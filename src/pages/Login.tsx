@@ -36,7 +36,6 @@ export const Login = () => {
    };
 
    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-      console.log("------handleSubmit-----");
       event.preventDefault();
       setSuccess(false);
       setLoading(true);

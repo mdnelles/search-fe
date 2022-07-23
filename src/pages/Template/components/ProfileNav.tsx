@@ -6,16 +6,10 @@ import React from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { setSnackbar } from "../../../features/snackbar/snackbarSlice";
-import {
-   clearSession,
-   setSession,
-} from "../../../features/session/sessionSlice";
-
-interface ProfileNavProps {
-   mopen: any;
-   handleClick: any;
-   handleMenuClose: any;
-}
+import { clearSession } from "../../../features/session/sessionSlice";
+import { clearTitles } from "../../../features/titles/titlesSlice";
+import { clearTodo } from "../../../features/todo/todoSlice";
+import { clearNote } from "../../../features/note/noteSlice";
 
 export const ProfileNav = (): any => {
    const navigate = useNavigate();
@@ -41,6 +35,9 @@ export const ProfileNav = (): any => {
       );
       setAnchorEl(event.currentTarget);
       dispatch(clearSession());
+      dispatch(clearTodo());
+      dispatch(clearTitles());
+      dispatch(clearNote());
       navigate(`/`);
    };
 
