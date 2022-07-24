@@ -9,29 +9,35 @@ import { useAppSelector } from "./app/hooks";
 import { SnackbarMsg } from "./components/SnackbarMsg";
 import { Note } from "./pages/Note";
 import { Todo } from "./pages/Todo";
+import ProtectedRoute from "./utilities/ProtectedRoute";
+import { CollectionsOutlined } from "@mui/icons-material";
 
 function App() {
    const navigate = useNavigate();
    let session: any = useAppSelector((state) => state.snackbar);
    let snackbar: any = useAppSelector((state) => state.snackbar);
-   const checkLogin = () => {
-      if (!session || session.token) navigate(`/login`);
-   };
+   let stateAll: any = useAppSelector((state) => state);
+
    useEffect(() => {}, [snackbar]);
+
    useMemo(() => {
-      checkLogin();
-   }, []);
+      console.log(stateAll);
+   }, [stateAll]);
+
    return (
       <>
          <Suspense fallback={<div>Loading...</div>}>
             <Routes>
                <Route path='/' element={<Login />} />
                <Route path='/login' element={<Login />} />
-               <Route path='/dashboard' element={<Dashboard text={""} />} />
-               <Route path='/search' element={<Search text={""} />} />
-               <Route path='/add' element={<Add text={""} />} />
-               <Route path='/note' element={<Note text={""} />} />
-               <Route path='/todo' element={<Todo text={""} />} />
+
+               <Route element={<ProtectedRoute />}>
+                  <Route path='/dashboard' element={<Dashboard text={""} />} />
+                  <Route path='/search' element={<Search text={""} />} />
+                  <Route path='/add' element={<Add text={""} />} />
+                  <Route path='/note' element={<Note text={""} />} />
+                  <Route path='/todo' element={<Todo text={""} />} />
+               </Route>
             </Routes>
          </Suspense>
          <SnackbarMsg snackbarState={snackbar} />

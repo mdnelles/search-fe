@@ -70,7 +70,7 @@ export const Login = () => {
                token: res.data.token,
             };
             dispatch(setSession({ ...session, user }));
-            navigate(`/dashboard`);
+            setTimeout(() => navigate(`/dashboard`), 500);
          }
          setSuccess(true);
          setLoading(false);

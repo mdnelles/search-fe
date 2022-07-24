@@ -13,3 +13,7 @@ export const isValidPassword = (password: any) => {
       return false;
    }
 };
+
+export const isValidSession = (session: any) => {
+   return !!session && !!session.user && session.user.token ? true : false;
+};
