@@ -5,6 +5,7 @@ interface Arr {
    id: number;
    title: string;
    date: string;
+   code: string;
 }
 
 export interface TitlesState {

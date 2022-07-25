@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
@@ -67,7 +66,7 @@ export const AppBarTop = (props: AppBarTopProps): any => {
                   noWrap
                   sx={{ flexGrow: 1 }}
                >
-                  Search
+                  Search Dashboard
                </Typography>
                <ProfileNav />
             </Toolbar>

@@ -1,17 +1,17 @@
-import { useSelector } from "react-redux";
-import { NavLink, Outlet } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { useAppSelector } from "../app/hooks";
 import { isValidSession } from "./validate";
 
 const ProtectedRoute = () => {
-   const dispatch = useAppDispatch();
-   const session: any = useAppSelector((state) => state.titles);
+   const session: any = useAppSelector((state) => state.session);
+   const navigate = useNavigate();
 
-   // show unauthorized screen if no user is found in redux store
    if (!isValidSession(session)) {
+      setTimeout(() => navigate(`/`), 2000);
       return (
          <div className='unauthorized'>
             <h1>Unauthorized :(</h1>
+
             <span>
                <NavLink to='/login'>Login</NavLink> to gain access
             </span>
