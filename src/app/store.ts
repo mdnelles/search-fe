@@ -3,6 +3,7 @@ import counterReducer from "../features/counter/counterSlice";
 import sessionReducer from "../features/session/sessionSlice";
 import snackbarReducer from "../features/snackbar/snackbarSlice";
 import titlesReducer from "../features/titles/titlesSlice";
+import suggestReducer from "../features/suggest/suggestSlice";
 import todoReducer from "../features/todo/todoSlice";
 import noteReducer from "../features/note/noteSlice";
 import stypeReducer from "../features/stype/stypeSlice";
@@ -16,6 +17,7 @@ export const store = configureStore({
       todo: todoReducer,
       note: noteReducer,
       stype: stypeReducer,
+      suggest: suggestReducer,
    },
 });
 
