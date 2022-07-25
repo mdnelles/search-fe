@@ -1,6 +1,6 @@
 import "./App.css";
-import React, { Suspense, useMemo, useEffect } from "react";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Suspense, useMemo, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Search } from "./pages/Search";
 import { Add } from "./pages/Add";
@@ -10,25 +10,23 @@ import { SnackbarMsg } from "./components/SnackbarMsg";
 import { Note } from "./pages/Note";
 import { Todo } from "./pages/Todo";
 import ProtectedRoute from "./utilities/ProtectedRoute";
-import { CollectionsOutlined } from "@mui/icons-material";
 
 function App() {
-   const navigate = useNavigate();
-   let session: any = useAppSelector((state) => state.snackbar);
    let snackbar: any = useAppSelector((state) => state.snackbar);
    let stateAll: any = useAppSelector((state) => state);
 
    useEffect(() => {}, [snackbar]);
 
    useMemo(() => {
-      console.log(stateAll);
+      localStorage.state = JSON.stringify(stateAll);
+      //console.log(JSON.parse(localStorage.state));
    }, [stateAll]);
 
    return (
       <>
          <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-               <Route path='/' element={<Login />} />
+               <Route path='/' element={<Navigate replace to='/login' />} />
                <Route path='/login' element={<Login />} />
 
                <Route element={<ProtectedRoute />}>

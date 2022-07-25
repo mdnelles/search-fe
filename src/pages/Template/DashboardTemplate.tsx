@@ -51,6 +51,7 @@ export const DashboardTemplate = (props: DashboardTemplateProps) => {
                toggleDrawer={toggleDrawer}
                propsopen={open}
             />
+
             <DrawerLeft
                variant='permanent'
                open={open}
