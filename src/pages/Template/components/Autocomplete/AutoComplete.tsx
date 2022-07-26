@@ -1,6 +1,7 @@
 import react, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { setSuggest } from "../../../../features/suggest/suggestSlice";
 
 import {
    AutoCompleteContainer,
@@ -15,8 +16,9 @@ const Root = styled.div`
 `;
 
 interface IData {
-   name: string;
-   code: string;
+   name: any;
+   code: any;
+   body: any;
 }
 interface autoCompleteProps {
    iconColor?: string;
@@ -31,6 +33,8 @@ export const AutoComplete: FC<autoCompleteProps> = ({
    optionsStyle,
    data,
 }) => {
+   let suggest: any = useAppSelector((state) => state.suggest);
+   const dispatch = useAppDispatch();
    const [search, setSearch] = useState({
       text: "",
       suggestions: [],
@@ -42,8 +46,12 @@ export const AutoComplete: FC<autoCompleteProps> = ({
       if (value.length > 0) {
          const regex = new RegExp(`^${value}`, "i");
          suggestions = data.sort().filter((v: IData) => regex.test(v.name));
-         console.log("----suggestions----");
-         console.log(suggestions);
+
+         dispatch(
+            setSuggest({
+               arr: suggestions,
+            })
+         );
       }
       setIsComponentVisible(true);
       setSearch({ suggestions, text: value });
@@ -51,8 +59,6 @@ export const AutoComplete: FC<autoCompleteProps> = ({
 
    const suggestionSelected = (value: IData) => {
       setIsComponentVisible(false);
-      console.log("------value-----");
-      console.log(value);
 
       setSearch({
          text: value.name,

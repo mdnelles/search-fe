@@ -3,30 +3,10 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Link from "@mui/material/Link";
 
 import { DrawerLeft } from "./components/DrawerLeft";
 import { AppBarTop } from "./AppBarTop";
-
-function Copyright(props: any) {
-   return (
-      <Typography
-         variant='body2'
-         color='text.secondary'
-         align='center'
-         {...props}
-      >
-         {"Copyright © "}
-         <Link color='inherit' href='https://nelles.io'>
-            Your Website
-         </Link>{" "}
-         {new Date().getFullYear()}
-         {"."}
-      </Typography>
-   );
-}
 
 const drawerWidth: number = 240;
 const mdTheme = createTheme();

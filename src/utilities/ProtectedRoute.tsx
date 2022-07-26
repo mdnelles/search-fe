@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
    const navigate = useNavigate();
 
    if (!isValidSession(session)) {
-      setTimeout(() => navigate(`/`), 2000);
+      setTimeout(() => navigate(`/`), 500);
       return (
          <div className='unauthorized'>
             <h1>Unauthorized :(</h1>

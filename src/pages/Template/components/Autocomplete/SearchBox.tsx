@@ -3,19 +3,28 @@ import { useAppSelector } from "../../../../app/hooks";
 import { AutoComplete } from "./AutoComplete";
 
 interface TitleType {
-   id: number;
+   id: number | never;
    title: string;
-   date1?: string;
+   date: string;
+   code: string;
+}
+
+interface OptionsType {
+   name: string;
+   code: number | never;
+   body: string;
 }
 
 export const SearchBox = (): any => {
    const titles: TitleType[] | [] = useAppSelector((state) => state.titles.arr);
-   const [options, optionsSet] = useState([{ name: "init", code: 0 }]);
-   let tmp: any = [];
+   const [options, optionsSet] = useState<OptionsType[] | []>([
+      { name: "1", code: 1, body: "1" },
+   ]);
+   let tmp: OptionsType[] = [];
 
    titles.map((t) => {
-      let { id, title } = t;
-      tmp.push({ name: title, code: id });
+      const { id, title, code } = t;
+      tmp.push({ name: title, code: id, body: code });
    });
    try {
       if (tmp.length !== options.length) optionsSet(tmp);
