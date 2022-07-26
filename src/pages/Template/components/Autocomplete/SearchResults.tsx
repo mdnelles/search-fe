@@ -1,46 +1,73 @@
-import React, { useState } from "react";
 import { useAppSelector } from "../../../../app/hooks";
 
 interface results {
    id: number;
    title: string;
-   date: string;
+   date1: string;
    code: string;
+}
+
+interface SearchResultsProp {
+   suggest: any;
 }
 
 const entryWrapper = {
    width: "100%",
-   margin: 10,
-   padding: 10,
+   marginTop: 10,
+   border: "1px solid #bbb",
+   borderRadius: 3,
+   color: "#333",
+   backgroundColor: "#ddd",
+   overlow: "hidden",
 };
 
 const entryTitle = {
    width: "100%",
-   margin: 10,
    padding: 10,
+   backgroundColor: "#bbb",
+   cursor: "pointer",
 };
 
 const entryBody = {
    width: "100%",
-   margin: 10,
    padding: 10,
+   display: "none",
 };
 
-const Result = (entry: results) => {
+const tog = (id: number) => {
+   const e = document.getElementById("b-" + id);
+   if (!!e) {
+      e.style.display = e.style.display === "none" ? "block" : "none";
+      console.log(e?.style.display);
+   }
+};
+
+const Display = (obj: results | any) => {
+   const { name, body, code } = obj.entry;
    return (
-      <>
+      <div key={code}>
          <div style={entryWrapper}>
-            <div style={entryTitle}></div>
-            <div style={entryBody}></div>
+            <div style={entryTitle} onClick={() => tog(code)}>
+               {name}
+            </div>
+            <div style={entryBody} id={"b-" + code}>
+               <pre>{body}</pre>
+            </div>
          </div>
-      </>
+      </div>
    );
 };
 
-export const SearchResults = (): any => {
+export const SearchResults = (props: SearchResultsProp): any => {
+   const { suggest = [] } = props;
    const titles: any = useAppSelector((state) => state.titles);
-
-   const [resultsSm, resultsSet] = useState<results[] | []>([]);
-
-   return <>Search Results</>;
+   //{people.filter(person => person.age < 60).map(filteredPerson => (
+   return (
+      <>
+         <b>Search Results</b>
+         {!suggest || !suggest.arr
+            ? null
+            : suggest.arr.map((t: any) => <Display entry={t} />)}
+      </>
+   );
 };
