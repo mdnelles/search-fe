@@ -1,6 +1,10 @@
+import Button from "@mui/material/Button";
+import { useState } from "react";
 import { useAppSelector } from "../../../../app/hooks";
+import { rand } from "../../../../utilities/gen";
+import { SearchEdit } from "../dialogs/SearchEdit";
 
-interface results {
+interface TitleType {
    id: number;
    title: string;
    date1: string;
@@ -38,30 +42,49 @@ const tog = (id: number) => {
    const e = document.getElementById("b-" + id);
    if (!!e) {
       e.style.display = e.style.display === "none" ? "block" : "none";
-      console.log(e?.style.display);
    }
-};
-
-const Display = (obj: results | any) => {
-   const { name, body, code } = obj.entry;
-   return (
-      <div key={"i-" + code}>
-         <div style={entryWrapper}>
-            <div style={entryTitle} onClick={() => tog(code)}>
-               {name}
-            </div>
-            <div style={entryBody} id={"b-" + code}>
-               <pre>{body}</pre>
-            </div>
-         </div>
-      </div>
-   );
 };
 
 export const SearchResults = (props: SearchResultsProp): any => {
    const { suggest = [] } = props;
-   const titles: any = useAppSelector((state) => state.titles);
-   //{people.filter(person => person.age < 60).map(filteredPerson => (
+
+   const [open, openSet] = useState(false);
+   const [idEdit, idEditSet] = useState<number>(0);
+   const [selectedValue, setSelectedValue] = useState("");
+
+   const Display = (obj: TitleType | any) => {
+      const { name, body, code } = obj.entry;
+      return (
+         <div key={"i-" + code}>
+            <div style={entryWrapper}>
+               <div style={entryTitle} onClick={() => tog(code)}>
+                  {name}
+               </div>
+               <div style={entryBody} id={"b-" + code}>
+                  <pre>{body}</pre>
+                  <Button
+                     onClick={() => {
+                        idEditSet(code);
+                        openSet(true);
+                     }}
+                  >
+                     Edit
+                  </Button>
+               </div>
+            </div>
+         </div>
+      );
+   };
+
+   const handleClickOpen = () => {
+      openSet(true);
+   };
+
+   const handleClose = (value: string) => {
+      openSet(false);
+      setSelectedValue(value);
+   };
+
    return (
       <>
          <b>Search Results</b>
@@ -70,6 +93,15 @@ export const SearchResults = (props: SearchResultsProp): any => {
             : suggest.arr.map((t: any) => (
                  <Display entry={t} key={"kk-" + t.code} />
               ))}
+         {idEdit === 0 ? null : (
+            <SearchEdit
+               selectedValue={selectedValue}
+               open={open}
+               onClose={handleClose}
+               id={idEdit}
+               key={rand()}
+            />
+         )}
       </>
    );
 };
