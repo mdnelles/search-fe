@@ -16,9 +16,8 @@ const Root = styled.div`
 `;
 
 interface IData {
-   name: any;
-   code: any;
-   body: any;
+   name: string;
+   code: string;
 }
 interface autoCompleteProps {
    iconColor?: string;
@@ -93,20 +92,22 @@ export const AutoComplete: FC<autoCompleteProps> = ({
                style={inputStyle}
             />
          </div>
-         {suggestions.length > 0 && isComponentVisible && (
-            <AutoCompleteContainer style={optionsStyle}>
-               {suggestions.map((item: IData) => (
-                  <AutoCompleteItem key={item.code}>
-                     <AutoCompleteItemButton
-                        key={item.code}
-                        onClick={() => suggestionSelected(item)}
-                     >
-                        {item.name}
-                     </AutoCompleteItemButton>
-                  </AutoCompleteItem>
-               ))}
-            </AutoCompleteContainer>
-         )}
+         <div style={{ position: "absolute", left: -2000 }}>
+            {suggestions.length > 0 && isComponentVisible && (
+               <AutoCompleteContainer style={optionsStyle}>
+                  {suggestions.map((item: IData) => (
+                     <AutoCompleteItem key={item.code}>
+                        <AutoCompleteItemButton
+                           key={item.code}
+                           onClick={() => suggestionSelected(item)}
+                        >
+                           {item.name}
+                        </AutoCompleteItemButton>
+                     </AutoCompleteItem>
+                  ))}
+               </AutoCompleteContainer>
+            )}
+         </div>
       </Root>
    );
 };

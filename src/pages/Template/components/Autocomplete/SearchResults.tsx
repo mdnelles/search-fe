@@ -67,7 +67,9 @@ export const SearchResults = (props: SearchResultsProp): any => {
          <b>Search Results</b>
          {!suggest || !suggest.arr
             ? null
-            : suggest.arr.map((t: any) => <Display entry={t} />)}
+            : suggest.arr.map((t: any) => (
+                 <Display entry={t} key={"kk-" + t.code} />
+              ))}
       </>
    );
 };
