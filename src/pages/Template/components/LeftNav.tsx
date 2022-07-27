@@ -9,6 +9,7 @@ import AddIcon from "@mui/icons-material/Add";
 import TextSnippetIcon from "@mui/icons-material/TextSnippet";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CategoryIcon from "@mui/icons-material/Category";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 
@@ -60,7 +61,7 @@ export const LeftNav = (props: LeftNavProps) => {
             </ListSubheader>
             <ListItemButton onClick={() => goPage(`/categories`)}>
                <ListItemIcon>
-                  <AssignmentIcon />
+                  <CategoryIcon />
                </ListItemIcon>
                <ListItemText primary='Manage Category' />
             </ListItemButton>
