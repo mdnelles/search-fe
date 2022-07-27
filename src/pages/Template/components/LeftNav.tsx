@@ -56,13 +56,13 @@ export const LeftNav = (props: LeftNavProps) => {
             <Divider sx={{ my: 1 }} />
 
             <ListSubheader component='div' inset>
-               App Info
+               App Config
             </ListSubheader>
-            <ListItemButton>
+            <ListItemButton onClick={() => goPage(`/categories`)}>
                <ListItemIcon>
                   <AssignmentIcon />
                </ListItemIcon>
-               <ListItemText primary='Current month' />
+               <ListItemText primary='Manage Category' />
             </ListItemButton>
          </List>
       </>

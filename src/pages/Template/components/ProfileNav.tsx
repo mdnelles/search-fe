@@ -10,6 +10,7 @@ import { clearSession } from "../../../features/session/sessionSlice";
 import { clearTitles } from "../../../features/titles/titlesSlice";
 import { clearTodo } from "../../../features/todo/todoSlice";
 import { clearNote } from "../../../features/note/noteSlice";
+import { clearSearchTypes } from "../../../features/stype/stypeSlice";
 
 export const ProfileNav = (): any => {
    const navigate = useNavigate();
@@ -37,6 +38,7 @@ export const ProfileNav = (): any => {
       dispatch(clearSession());
       dispatch(clearTodo());
       dispatch(clearTitles());
+      dispatch(clearSearchTypes());
       dispatch(clearNote());
       navigate(`/`);
    };

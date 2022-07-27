@@ -25,7 +25,6 @@ export const titlesSlice = createSlice({
    reducers: {
       setTitles: (state, action: PayloadAction<any>) => {
          try {
-            console.log(action.payload);
             state.init = action.payload.init;
             state.arr = action.payload.arr;
          } catch (error) {

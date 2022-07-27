@@ -1,7 +1,7 @@
 import axios from "axios";
 import { API_REMOTE, API_LOCAL } from "../constants/api";
 
-const API_URL = window.location.href.toString().includes("localhost")
+export const API_URL = window.location.href.toString().includes("localhost")
    ? API_LOCAL
    : API_REMOTE;
 

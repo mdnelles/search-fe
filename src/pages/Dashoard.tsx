@@ -63,45 +63,51 @@ export const Dashboard = (props: DashboardProps) => {
       titles.init ? <Success /> : <Loading />
    );
 
-   dispatch(setSnackbar({ isOpen: false }));
+   setTimeout(() => {
+      // delay to allow parent render
 
-   (async () => {
-      if (!titles.init) {
-         dispatch(setTitles({ arr: [], init: true }));
-         const titlesRes = await apiPost("/search/get_titles", { token });
-         if (!titlesRes.data.err && !titles.init) {
-            dispatch(setTitles({ arr: titlesRes.data.data, init: true }));
-            titlesMsgSet(<Success />);
+      dispatch(setSnackbar({ isOpen: false }));
+
+      (async () => {
+         if (!titles.init) {
+            dispatch(setTitles({ arr: [], init: true }));
+            const titlesRes = await apiPost("/search/get_titles", { token });
+            if (!titlesRes.data.err && !titles.init) {
+               dispatch(setTitles({ arr: titlesRes.data.data, init: true }));
+               titlesMsgSet(<Success />);
+            }
          }
-      }
-   })();
-   (async () => {
-      if (!todo.init) {
-         const todoRes = await apiPost("/todo/get_todo", { token });
-         if (!todoRes.data.err && !todo.init) {
-            dispatch(setTodo({ arr: todoRes.data.data, init: true }));
-            todoMsgSet(<Success />);
+      })();
+      (async () => {
+         if (!todo.init) {
+            const todoRes = await apiPost("/todo/get_todo", { token });
+            if (!todoRes.data.err && !todo.init) {
+               dispatch(setTodo({ arr: todoRes.data.data, init: true }));
+               todoMsgSet(<Success />);
+            }
          }
-      }
-   })();
-   (async () => {
-      if (!stype.init) {
-         const stypeRes = await apiPost("/search/get_ttypes", { token });
-         if (!stypeRes.data.err && !stype.init) {
-            dispatch(setSearchTypes({ arr: stypeRes.data.data, init: true }));
-            stypeMsgSet(<Success />);
+      })();
+      (async () => {
+         if (!stype.init) {
+            const stypeRes = await apiPost("/search/get_ttypes", { token });
+            if (!stypeRes.data.err && !stype.init) {
+               dispatch(
+                  setSearchTypes({ arr: stypeRes.data.data, init: true })
+               );
+               stypeMsgSet(<Success />);
+            }
          }
-      }
-   })();
-   (async () => {
-      if (!note.txt) {
-         const noteRes = await apiPost("/note/fetch", { token });
-         if (!noteRes.data.err && !todo.init) {
-            dispatch(setNote({ txt: noteRes.data.data, init: true }));
-            noteMsgSet(<Success />);
+      })();
+      (async () => {
+         if (!note.txt) {
+            const noteRes = await apiPost("/note/fetch", { token });
+            if (!noteRes.data.err && !todo.init) {
+               dispatch(setNote({ txt: noteRes.data.data, init: true }));
+               noteMsgSet(<Success />);
+            }
          }
-      }
-   })();
+      })();
+   }, 100);
 
    return (
       <DashboardTemplate>

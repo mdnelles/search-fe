@@ -45,7 +45,7 @@ const tog = (id: number) => {
 const Display = (obj: results | any) => {
    const { name, body, code } = obj.entry;
    return (
-      <div key={code}>
+      <div key={"i-" + code}>
          <div style={entryWrapper}>
             <div style={entryTitle} onClick={() => tog(code)}>
                {name}
