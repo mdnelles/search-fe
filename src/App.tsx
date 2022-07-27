@@ -35,7 +35,7 @@ function App() {
                   <Route path='/search' element={<Search text={""} />} />
                   <Route path='/add' element={<Add />} />
                   <Route path='/note' element={<Note text={""} />} />
-                  <Route path='/todo' element={<Todo text={""} />} />
+                  <Route path='/todo' element={<Todo />} />
                   <Route path='/categories' element={<Categories />} />
                </Route>
             </Routes>
