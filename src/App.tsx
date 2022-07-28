@@ -7,7 +7,6 @@ import { Add } from "./pages/Add";
 import { Dashboard } from "./pages/Dashoard";
 import { useAppSelector } from "./app/hooks";
 import { SnackbarMsg } from "./components/SnackbarMsg";
-import { Note } from "./pages/Note";
 import { Todo } from "./pages/Todo";
 import ProtectedRoute from "./utilities/ProtectedRoute";
 import { Categories } from "./pages/Categories";
@@ -34,7 +33,6 @@ function App() {
                   <Route path='/dashboard' element={<Dashboard text={""} />} />
                   <Route path='/search' element={<Search text={""} />} />
                   <Route path='/add' element={<Add />} />
-                  <Route path='/note' element={<Note text={""} />} />
                   <Route path='/todo' element={<Todo />} />
                   <Route path='/categories' element={<Categories />} />
                </Route>
