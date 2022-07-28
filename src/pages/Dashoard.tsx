@@ -19,6 +19,8 @@ const pstyle = {
    paddingTop: 11,
    paddingRight: 20,
    paddingBottom: 10,
+   background:
+      "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(227,227,227,1) 100%)",
 };
 
 interface DashboardProps {

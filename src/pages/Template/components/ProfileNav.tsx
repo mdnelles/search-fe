@@ -11,6 +11,7 @@ import { clearTitles } from "../../../features/titles/titlesSlice";
 import { clearTodo } from "../../../features/todo/todoSlice";
 import { clearNote } from "../../../features/note/noteSlice";
 import { clearSearchTypes } from "../../../features/stype/stypeSlice";
+import { clearSuggest } from "../../../features/suggest/suggestSlice";
 
 export const ProfileNav = (): any => {
    const navigate = useNavigate();
@@ -38,6 +39,7 @@ export const ProfileNav = (): any => {
       dispatch(clearSession());
       dispatch(clearTodo());
       dispatch(clearTitles());
+      dispatch(clearSuggest());
       dispatch(clearSearchTypes());
       dispatch(clearNote());
       navigate(`/`);

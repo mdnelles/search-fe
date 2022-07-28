@@ -9,6 +9,8 @@ import { apiPost } from "../../../../utilities/ApiRequest";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { setSuggest } from "../../../../features/suggest/suggestSlice";
+import { setTitles } from "../../../../features/titles/titlesSlice";
 
 const emails = ["username@gmail.com", "user02@gmail.com"];
 
@@ -30,6 +32,7 @@ export function SearchEdit(props: SearchEditProps) {
    const dispatch = useAppDispatch();
    const session: any = useAppSelector((state) => state.session);
    const suggest: any = useAppSelector((state) => state.suggest);
+   const titles: any = useAppSelector((state) => state.titles);
    const token = session.user.token;
 
    const local = suggest.arr.filter(
@@ -42,7 +45,6 @@ export function SearchEdit(props: SearchEditProps) {
    const [code, setCode] = useState<string>(
       !!local && !!local[0] && !!local[0].body ? local[0].body : ""
    );
-   const [keywords, setKeywords] = useState<string[] | []>([]);
 
    const handleClose = () => {
       setTitle("");
@@ -75,16 +77,16 @@ export function SearchEdit(props: SearchEditProps) {
       code = sqlPrep({ s: code });
 
       try {
-         var kw = JSON.stringify(keywords)
-            .replace("[", "")
-            .replace("]", "")
-            .replace(/"/g, "");
-         const res = await apiPost("/search/upd_entry", {
+         await apiPost("/search/upd_entry", {
             token,
             title,
             code,
             id,
          });
+
+         //let tmp = suggest.arr;
+         //tmp = [...tmp, { code: id, name: title, body: code }];
+         //dispatch(setSuggest({ ...suggest, arr: tmp }));
 
          dispatch(
             setSnackbar({
