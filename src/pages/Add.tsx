@@ -27,16 +27,10 @@ export const Add = (): any => {
    const token = session.user.token;
    const ttypeArr: any = useAppSelector((state) => state.stype.arr);
 
-   const [fileSelected, setFileSelected] = React.useState<File>(); // also tried <string | Blob>
-   const [ttype, setTtype] = useState("");
-   const [title, setTitle] = useState("");
-   const [intro, setIntro] = useState("");
-   const [code, setCode] = useState("");
-   const [gridClass, setGridClass] = useState("displayBlock");
-   const [uploadRunning, setUploadRunning] = useState(0);
-   const [uploadTotal, setUploadTotal] = useState(0);
-   const [percentComplete, setPercentComplete] = useState(0);
-   const [viewProgress, setViewProgress] = useState("displayNone");
+   const [ttype, setTtype] = useState<string>("");
+   const [title, setTitle] = useState<string>("");
+   const [intro, setIntro] = useState<string>("");
+   const [code, setCode] = useState<string>("");
    const [keywords, setKeywords] = useState<string[] | []>([]);
 
    const selectChange = (event: any) => {
@@ -78,10 +72,10 @@ export const Add = (): any => {
          })
       );
 
-      setTtype(sqlPrep(ttype));
-      setTitle(sqlPrep(title));
-      setIntro(sqlPrep(intro));
-      setCode(sqlPrep(code));
+      setTtype(sqlPrep({ s: ttype }));
+      setTitle(sqlPrep({ s: title }));
+      setIntro(sqlPrep({ s: intro }));
+      setCode(sqlPrep({ s: code }));
 
       try {
          var kw = JSON.stringify(keywords)
@@ -114,7 +108,7 @@ export const Add = (): any => {
       <DashboardTemplate>
          <div id='main' className='body'>
             <h3>Add to CodeBase</h3> <br />
-            <div className={gridClass}>
+            <div>
                <Grid container spacing={1}>
                   <Grid item xs={12}>
                      <div style={lgBg}>
