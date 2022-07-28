@@ -77,7 +77,7 @@ export function SearchEdit(props: SearchEditProps) {
       code = sqlPrep({ s: code });
 
       try {
-         await apiPost("/search/upd_entry", {
+         await apiPost("/sv-search/upd_entry", {
             token,
             title,
             code,

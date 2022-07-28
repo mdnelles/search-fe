@@ -53,7 +53,7 @@ export const Login = () => {
                duration: 5500,
             })
          );
-         const res = await apiPost("/user/login", { email, password });
+         const res = await apiPost("/sv-user/login", { email, password });
 
          if (res.data.err) {
             dispatch(

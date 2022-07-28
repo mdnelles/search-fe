@@ -82,7 +82,7 @@ export const Add = (): any => {
             .replace("[", "")
             .replace("]", "")
             .replace(/"/g, "");
-         const res = await apiPost("/search/add_entry", {
+         const res = await apiPost("/sv-search/add_entry", {
             token,
             ttype,
             title,

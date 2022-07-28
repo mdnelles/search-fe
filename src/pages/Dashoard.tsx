@@ -73,7 +73,9 @@ export const Dashboard = (props: DashboardProps) => {
       (async () => {
          if (!titles.init) {
             dispatch(setTitles({ arr: [], init: true }));
-            const titlesRes = await apiPost("/search/get_titles", { token });
+            const titlesRes = await apiPost("/sv-search/get_titles", {
+               token,
+            });
             if (!titlesRes.data.err && !titles.init) {
                dispatch(setTitles({ arr: titlesRes.data.data, init: true }));
                titlesMsgSet(<Success />);
@@ -82,7 +84,7 @@ export const Dashboard = (props: DashboardProps) => {
       })();
       (async () => {
          if (!todo.init) {
-            const todoRes = await apiPost("/todo/get_todo", { token });
+            const todoRes = await apiPost("/sv-todo/get_todo", { token });
             if (!todoRes.data.err && !todo.init) {
                dispatch(setTodo({ arr: todoRes.data.data, init: true }));
                todoMsgSet(<Success />);
@@ -91,7 +93,7 @@ export const Dashboard = (props: DashboardProps) => {
       })();
       (async () => {
          if (!stype.init) {
-            const stypeRes = await apiPost("/search/get_ttypes", { token });
+            const stypeRes = await apiPost("/sv-search/get_ttypes", { token });
             if (!stypeRes.data.err && !stype.init) {
                dispatch(
                   setSearchTypes({ arr: stypeRes.data.data, init: true })
@@ -102,7 +104,7 @@ export const Dashboard = (props: DashboardProps) => {
       })();
       (async () => {
          if (!note.txt) {
-            const noteRes = await apiPost("/note/fetch", { token });
+            const noteRes = await apiPost("/sv-note/fetch", { token });
             if (!noteRes.data.err && !todo.init) {
                dispatch(setNote({ txt: noteRes.data.data, init: true }));
                noteMsgSet(<Success />);

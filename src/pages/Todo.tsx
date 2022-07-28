@@ -48,7 +48,7 @@ export const Todo = (): any => {
                duration: 3000,
             })
          );
-         apiPost("/todo/del_entry", { token, id });
+         apiPost("/sv-todo/del_entry", { token, id });
       }
    };
 
@@ -62,7 +62,7 @@ export const Todo = (): any => {
          })
       );
       //title, details, due
-      let resp = await apiPost("/todo/add_entry", {
+      let resp = await apiPost("/sv-todo/add_entry", {
          token,
          title,
          details,

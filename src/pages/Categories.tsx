@@ -49,7 +49,7 @@ export const Categories = (): any => {
                duration: 3000,
             })
          );
-         apiPost("/search/del_cat", { token, id });
+         apiPost("/sv-search/del_cat", { token, id });
       }
    };
 
@@ -62,7 +62,10 @@ export const Categories = (): any => {
             duration: 3000,
          })
       );
-      let resp = await apiPost("/search/add_cat", { token, category: name });
+      let resp = await apiPost("/sv-search/add_cat", {
+         token,
+         category: name,
+      });
       let tmp = categories.arr;
       tmp = [...tmp, { id: resp.data.data.id, ttype: name }];
 
