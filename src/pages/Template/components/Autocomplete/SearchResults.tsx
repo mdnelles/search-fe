@@ -21,7 +21,8 @@ const entryWrapper = {
    border: "1px solid #bbb",
    borderRadius: 3,
    color: "#333",
-   backgroundColor: "#ddd",
+   background:
+      "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(227,227,227,1) 100%)",
    overlow: "hidden",
 };
 
@@ -91,7 +92,7 @@ export const SearchResults = (props: SearchResultsProp): any => {
          {!suggest || !suggest.arr
             ? null
             : suggest.arr.map((t: any) => (
-                 <Display entry={t} key={"kk-" + t.code} />
+                 <Display entry={t} key={"kk-" + rand()} />
               ))}
          {idEdit === 0 ? null : (
             <SearchEdit

@@ -41,12 +41,7 @@ export const LeftNav = (props: LeftNavProps) => {
                </ListItemIcon>
                <ListItemText primary='Add' />
             </ListItemButton>
-            <ListItemButton onClick={() => goPage(`/note`)}>
-               <ListItemIcon>
-                  <TextSnippetIcon />
-               </ListItemIcon>
-               <ListItemText primary='NotePad' />
-            </ListItemButton>
+
             <ListItemButton onClick={() => goPage(`/todo`)}>
                <ListItemIcon>
                   <CheckCircleIcon />
