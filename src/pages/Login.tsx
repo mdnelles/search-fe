@@ -128,6 +128,7 @@ export const Login = () => {
                      margin='normal'
                      required
                      fullWidth
+                     type='password'
                      name='password'
                      label='Password'
                      id='password'
