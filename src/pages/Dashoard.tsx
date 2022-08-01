@@ -7,11 +7,13 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import { apiPost } from "../utilities/ApiRequest";
-import { setTitles } from "../features/titles/titlesSlice";
+import { clearTitles, setTitles } from "../features/titles/titlesSlice";
 import { useState } from "react";
-import { setTodo } from "../features/todo/todoSlice";
+import { clearTodo, setTodo } from "../features/todo/todoSlice";
 import { setNote } from "../features/note/noteSlice";
 import { setSearchTypes } from "../features/stype/stypeSlice";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 
 const pstyle = {
    margin: 20,
@@ -64,6 +66,9 @@ export const Dashboard = (props: DashboardProps) => {
    const [stypeMsg, stypeMsgSet] = useState<JSX.Element>(
       titles.init ? <Success /> : <Loading />
    );
+
+   const handleReloadTitles = () => dispatch(clearTitles());
+   const handleReloadTodo = () => dispatch(clearTodo());
 
    setTimeout(() => {
       // delay to allow parent render
@@ -128,7 +133,20 @@ export const Dashboard = (props: DashboardProps) => {
                <>
                   Titles are loaded count : {titles.arr.length || 0}
                   <hr />
-                  {titlesMsg}
+                  <Grid container spacing={2}>
+                     <Grid item xs={2}>
+                        {titlesMsg}
+                     </Grid>
+                     <Grid item xs={10} style={{ textAlign: "right" }}>
+                        <Button
+                           onClick={handleReloadTitles}
+                           size='small'
+                           variant='outlined'
+                        >
+                           Reload
+                        </Button>
+                     </Grid>
+                  </Grid>
                </>
             )}
          </Paper>
@@ -144,7 +162,20 @@ export const Dashboard = (props: DashboardProps) => {
                <>
                   Todos are loaded count : {todo.arr.length || 0}
                   <hr />
-                  {todoMsg}
+                  <Grid container spacing={2}>
+                     <Grid item xs={2}>
+                        {todoMsg}
+                     </Grid>
+                     <Grid item xs={10} style={{ textAlign: "right" }}>
+                        <Button
+                           onClick={handleReloadTodo}
+                           size='small'
+                           variant='outlined'
+                        >
+                           Reload
+                        </Button>
+                     </Grid>
+                  </Grid>
                </>
             )}
          </Paper>

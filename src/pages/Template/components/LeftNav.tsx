@@ -6,8 +6,6 @@ import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
-import TextSnippetIcon from "@mui/icons-material/TextSnippet";
-import AssignmentIcon from "@mui/icons-material/Assignment";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CategoryIcon from "@mui/icons-material/Category";
 import List from "@mui/material/List";
