@@ -33,18 +33,23 @@ export const AutoComplete: FC<autoCompleteProps> = ({
    data,
 }) => {
    let suggest: any = useAppSelector((state) => state.suggest);
+   let titles: any = useAppSelector((state) => state.titles);
    const dispatch = useAppDispatch();
    const [search, setSearch] = useState({
       text: "",
       suggestions: [],
    });
+
    const [isComponentVisible, setIsComponentVisible] = useState(true);
    const onTextChanged = (e: ChangeEvent<HTMLInputElement>) => {
       const value = e.target.value;
       let suggestions: any = [];
       if (value.length > 0) {
          const regex = new RegExp(`^${value}`, "i");
-         suggestions = data.sort().filter((v: IData) => regex.test(v.name));
+         //suggestions = data.sort().filter((v: IData) => regex.test(v.name));
+         suggestions = data
+            .sort()
+            .filter((v: IData) => v.name.toString().includes(value));
 
          dispatch(
             setSuggest({
