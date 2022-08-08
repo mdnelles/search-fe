@@ -33,7 +33,6 @@ export const AutoComplete: FC<autoCompleteProps> = ({
    data,
 }) => {
    let suggest: any = useAppSelector((state) => state.suggest);
-   let titles: any = useAppSelector((state) => state.titles);
    const dispatch = useAppDispatch();
    const [search, setSearch] = useState({
       text: "",
@@ -49,7 +48,12 @@ export const AutoComplete: FC<autoCompleteProps> = ({
          //suggestions = data.sort().filter((v: IData) => regex.test(v.name));
          suggestions = data
             .sort()
-            .filter((v: IData) => v.name.toString().includes(value));
+            .filter((v: IData) =>
+               v.name
+                  .toString()
+                  .toUpperCase()
+                  .includes(value.toString().toUpperCase())
+            );
 
          dispatch(
             setSuggest({
