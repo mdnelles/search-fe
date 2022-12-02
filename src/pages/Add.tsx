@@ -5,14 +5,13 @@ import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
 import InputLabel from "@mui/material/InputLabel";
-import LinearProgress from "@mui/material/LinearProgress";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import TextField from "@mui/material/TextField";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
-import { apiPost, API_URL } from "../utilities/ApiRequest";
+import { apiPost } from "../utilities/ApiRequest";
 import { sqlPrep } from "../utilities/gen";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
 
@@ -42,10 +41,10 @@ export const Add = (): any => {
       event: React.ChangeEvent<HTMLInputElement>,
       thisKeyword: { toString: () => any }
    ) => {
-      let kw: string[] = [];
+      const kw: string[] = [];
 
       if (event.target.checked === true) {
-         let temp = [];
+         const temp = [];
          temp.push(thisKeyword.toString());
          Array.prototype.push.apply(kw, temp);
          setKeywords(kw);
@@ -72,13 +71,13 @@ export const Add = (): any => {
          })
       );
 
-      setTtype(sqlPrep({ s: ttype }));
-      setTitle(sqlPrep({ s: title }));
-      setIntro(sqlPrep({ s: intro }));
-      setCode(sqlPrep({ s: code }));
+      setTtype(sqlPrep(ttype));
+      setTitle(sqlPrep(title));
+      setIntro(sqlPrep(intro));
+      setCode(sqlPrep(code));
 
       try {
-         var kw = JSON.stringify(keywords)
+         const kw = JSON.stringify(keywords)
             .replace("[", "")
             .replace("]", "")
             .replace(/"/g, "");
@@ -90,6 +89,7 @@ export const Add = (): any => {
             code,
             kw,
          });
+         console.log(res);
 
          dispatch(
             setSnackbar({
