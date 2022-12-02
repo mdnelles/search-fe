@@ -46,14 +46,13 @@ export const AutoComplete: FC<autoCompleteProps> = ({
       if (value.length > 0) {
          const regex = new RegExp(`^${value}`, "i");
          //suggestions = data.sort().filter((v: IData) => regex.test(v.name));
-         suggestions = data
-            .sort()
-            .filter((v: IData) =>
-               v.name
-                  .toString()
-                  .toUpperCase()
-                  .includes(value.toString().toUpperCase())
-            );
+         suggestions = data.sort().filter((v: IData) => {
+            console.log(v);
+            v.name
+               .toString()
+               .toUpperCase()
+               .includes(value.toString().toUpperCase());
+         });
 
          dispatch(
             setSuggest({
