@@ -10,7 +10,6 @@ import { apiPost } from "../utilities/ApiRequest";
 import { clearTitles, setTitles } from "../features/titles/titlesSlice";
 import { useState } from "react";
 import { clearTodo, setTodo } from "../features/todo/todoSlice";
-import { setNote } from "../features/note/noteSlice";
 import { setSearchTypes } from "../features/stype/stypeSlice";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
@@ -49,7 +48,6 @@ export const Dashboard = (props: DashboardProps) => {
    const dispatch = useAppDispatch();
    const titles: any = useAppSelector((state) => state.titles);
    const todo: any = useAppSelector((state) => state.todo);
-   const note: any = useAppSelector((state) => state.note);
    const session: any = useAppSelector((state) => state.session);
    const stype: any = useAppSelector((state) => state.stype);
    const token = session.user.token;
@@ -58,9 +56,6 @@ export const Dashboard = (props: DashboardProps) => {
       titles.init ? <Success /> : <Loading />
    );
    const [todoMsg, todoMsgSet] = useState<JSX.Element>(
-      titles.init ? <Success /> : <Loading />
-   );
-   const [noteMsg, noteMsgSet] = useState<JSX.Element>(
       titles.init ? <Success /> : <Loading />
    );
    const [stypeMsg, stypeMsgSet] = useState<JSX.Element>(
@@ -107,6 +102,7 @@ export const Dashboard = (props: DashboardProps) => {
             }
          }
       })();
+      /*
       (async () => {
          if (!note.txt) {
             const noteRes = await apiPost("/sv-note/fetch", { token });
@@ -115,7 +111,7 @@ export const Dashboard = (props: DashboardProps) => {
                noteMsgSet(<Success />);
             }
          }
-      })();
+      })();*/
    }, 100);
 
    return (
@@ -192,22 +188,6 @@ export const Dashboard = (props: DashboardProps) => {
                   Types are loaded count : {stype.arr.length || 0}
                   <hr />
                   {stypeMsg}
-               </>
-            )}
-         </Paper>
-         <Paper style={pstyle}>
-            <b>Notepad</b>
-            <br />
-            {!note.txt ? (
-               <Box sx={{ width: "100%" }}>
-                  Loading notepad...
-                  <LinearProgress />
-               </Box>
-            ) : (
-               <>
-                  Loaded and ready to go
-                  <hr />
-                  {noteMsg}
                </>
             )}
          </Paper>
