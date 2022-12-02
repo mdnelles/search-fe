@@ -161,6 +161,9 @@ export const Login = () => {
                </Box>
             </Box>
          </Container>
+         <div style={{ padding: 10, textAlign: "center", color: "#eee" }}>
+            1.1.12
+         </div>
       </ThemeProvider>
    );
 };
