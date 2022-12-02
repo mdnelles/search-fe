@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import { apiPost } from "../utilities/ApiRequest";
-import { sqlPrep } from "../utilities/gen";
+import { rand, sqlPrep } from "../utilities/gen";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
 
 const lgBg = {
@@ -172,7 +172,7 @@ export const Add = (): any => {
                      <div style={lgBg}>
                         {ttypeArr.map((atype: any) => (
                            <FormControlLabel
-                              key={"c-" + atype.id}
+                              key={"c-" + rand}
                               control={
                                  <Checkbox
                                     onChange={(event) =>

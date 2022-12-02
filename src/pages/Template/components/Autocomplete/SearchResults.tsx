@@ -1,6 +1,9 @@
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { useAppSelector } from "../../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { setSnackbar } from "../../../../features/snackbar/snackbarSlice";
+import { setTitles } from "../../../../features/titles/titlesSlice";
+import { apiPost } from "../../../../utilities/ApiRequest";
 import { rand } from "../../../../utilities/gen";
 import { SearchEdit } from "../dialogs/SearchEdit";
 
@@ -48,10 +51,44 @@ const tog = (id: number) => {
 
 export const SearchResults = (props: SearchResultsProp): any => {
    const { suggest = [] } = props;
+   const dispatch = useAppDispatch();
+   const session: any = useAppSelector((state) => state.session);
+   const titles: any = useAppSelector((state) => state.titles);
+   const token = session.user.token;
 
    const [open, openSet] = useState(false);
    const [idEdit, idEditSet] = useState<number>(0);
    const [selectedValue, setSelectedValue] = useState("");
+
+   const delEntryStart = async (event: any, id: any) => {
+      event.preventDefault();
+
+      dispatch(
+         setSnackbar({
+            msg: `deleting entry ...`,
+            isOpen: true,
+            severity: "success",
+            duration: 5500,
+         })
+      );
+      try {
+         await apiPost("/sv-search/del_entry", {
+            token,
+            id,
+         });
+         dispatch(setTitles(titles.filter((ti: any) => ti.id === id)));
+         dispatch(
+            setSnackbar({
+               msg: `Database record deleted...`,
+               isOpen: true,
+               severity: "success",
+               duration: 5500,
+            })
+         );
+      } catch (error) {
+         console.log(error);
+      }
+   };
 
    const Display = (obj: TitleType | any) => {
       const { name, body, code } = obj.entry;
@@ -69,7 +106,10 @@ export const SearchResults = (props: SearchResultsProp): any => {
                         openSet(true);
                      }}
                   >
-                     Edit
+                     Edit!
+                  </Button>
+                  <Button onClick={(event) => delEntryStart(event, code)}>
+                     Delete
                   </Button>
                </div>
             </div>

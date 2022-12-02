@@ -1,11 +1,11 @@
 import react, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { useAppDispatch } from "../../../../app/hooks";
 import { setSuggest } from "../../../../features/suggest/suggestSlice";
+import { rand } from "../../../../utilities/gen";
 
 import {
    AutoCompleteContainer,
-   AutoCompleteIcon,
    Input,
    AutoCompleteItem,
    AutoCompleteItemButton,
@@ -27,12 +27,11 @@ interface autoCompleteProps {
    data: any[];
 }
 export const AutoComplete: FC<autoCompleteProps> = ({
-   iconColor,
    inputStyle,
    optionsStyle,
    data,
 }) => {
-   const suggest: any = useAppSelector((state) => state.suggest);
+   //const suggest: any = useAppSelector((state) => state.suggest);
    const dispatch = useAppDispatch();
    const [search, setSearch] = useState({
       text: "",
@@ -44,16 +43,18 @@ export const AutoComplete: FC<autoCompleteProps> = ({
       const value = e.target.value;
       let suggestions: any = [];
       if (value.length > 0) {
-         const regex = new RegExp(`^${value}`, "i");
+         //const regex = new RegExp(`^${value}`, "i");
          //suggestions = data.sort().filter((v: IData) => regex.test(v.name));
-         suggestions = data.sort().filter((v: IData) => {
-            v === null || v.name === null
-               ? null
-               : v.name
-                    .toString()
-                    .toUpperCase()
-                    .includes(value.toString().toUpperCase());
-         });
+         suggestions = data
+            .sort()
+            .filter((v: IData) =>
+               v.name
+                  ? v.name
+                       .toString()
+                       .toUpperCase()
+                       .includes(value.toString().toUpperCase())
+                  : ""
+            );
 
          dispatch(
             setSuggest({
@@ -105,7 +106,7 @@ export const AutoComplete: FC<autoCompleteProps> = ({
             {suggestions.length > 0 && isComponentVisible && (
                <AutoCompleteContainer style={optionsStyle}>
                   {suggestions.map((item: IData) => (
-                     <AutoCompleteItem key={item.code}>
+                     <AutoCompleteItem key={item.code || rand()}>
                         <AutoCompleteItemButton
                            key={item.code}
                            onClick={() => suggestionSelected(item)}

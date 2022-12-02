@@ -8,6 +8,7 @@ import { apiPost } from "../../../../utilities/ApiRequest";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import { setTitles } from "../../../../features/titles/titlesSlice";
 
 const lgBg = {
    backgroundColor: "#ffffff",
@@ -27,6 +28,7 @@ export function SearchEdit(props: SearchEditProps) {
    const dispatch = useAppDispatch();
    const session: any = useAppSelector((state) => state.session);
    const suggest: any = useAppSelector((state) => state.suggest);
+   const titles: any = useAppSelector((state) => state.titles);
    const token = session.user.token;
 
    const local = suggest.arr.filter(
@@ -85,6 +87,45 @@ export function SearchEdit(props: SearchEditProps) {
                duration: 5500,
             })
          );
+         dispatch(
+            setTitles(
+               titles.map((ti: any) => {
+                  ti.id === id
+                     ? { id: ti.id, title: ti.title, code: ti.code }
+                     : ti;
+               })
+            )
+         );
+      } catch (error) {
+         console.log(error);
+      }
+   };
+
+   const delEntryStart = async (event: any) => {
+      event.preventDefault();
+
+      dispatch(
+         setSnackbar({
+            msg: `deleting entry ...`,
+            isOpen: true,
+            severity: "success",
+            duration: 5500,
+         })
+      );
+      try {
+         await apiPost("/sv-search/del_entry", {
+            token,
+            id,
+         });
+         dispatch(setTitles(titles.filter((ti: any) => ti.id === id)));
+         dispatch(
+            setSnackbar({
+               msg: `Database record deleted...`,
+               isOpen: true,
+               severity: "success",
+               duration: 5500,
+            })
+         );
       } catch (error) {
          console.log(error);
       }
@@ -137,6 +178,9 @@ export function SearchEdit(props: SearchEditProps) {
                                  onClick={(event) => editEntryStart(event)}
                               >
                                  Edit Entry
+                              </Button>
+                              <Button onClick={(event) => delEntryStart(event)}>
+                                 Delete
                               </Button>
                            </ButtonGroup>
                         </div>

@@ -22,6 +22,7 @@ export const suggestSlice = createSlice({
 
    reducers: {
       setSuggest: (state, action: PayloadAction<any>) => {
+         console.log(action);
          try {
             state.arr = action.payload.arr;
          } catch (error) {

@@ -15,6 +15,7 @@ import FolderIcon from "@mui/icons-material/Folder";
 import { apiPost } from "../utilities/ApiRequest";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import { setSearchTypes } from "../features/stype/stypeSlice";
+import { rand } from "../utilities/gen";
 
 const Demo = styled("div")(({ theme }) => ({
    backgroundColor: theme.palette.background.paper,
@@ -96,7 +97,7 @@ export const Categories = (): any => {
                   ? null
                   : categories.arr.map((c: catType) => (
                        <ListItem
-                          key={"i-" + c.id}
+                          key={"i-" + c.id || rand()}
                           secondaryAction={
                              <IconButton
                                 edge='end'
