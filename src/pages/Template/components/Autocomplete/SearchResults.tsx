@@ -41,7 +41,7 @@ const entryBody = {
 
 const tog = (id: number) => {
    const e = document.getElementById("b-" + id);
-   if (!!e) {
+   if (e) {
       e.style.display = e.style.display === "none" ? "block" : "none";
    }
 };

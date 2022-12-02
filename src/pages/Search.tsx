@@ -10,7 +10,7 @@ interface SearchProps {
 }
 
 export const Search = (props: SearchProps): any => {
-   let suggest: any = useAppSelector((state) => state.suggest);
+   const suggest: any = useAppSelector((state) => state.suggest);
 
    useEffect(() => {
       console.log("US suggest ....");

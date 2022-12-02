@@ -16,7 +16,7 @@ import { clearSuggest } from "../../../features/suggest/suggestSlice";
 export const ProfileNav = (): any => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
-   let session: any = useAppSelector((state) => state.session);
+   const session: any = useAppSelector((state) => state.session);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
 

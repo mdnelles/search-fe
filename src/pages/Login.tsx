@@ -22,7 +22,7 @@ const theme = createTheme();
 export const Login = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
-   let session: any = useAppSelector((state) => state.session);
+   const session: any = useAppSelector((state) => state.session);
    const [loading, setLoading] = React.useState(false);
    const [success, setSuccess] = React.useState(false);
 
