@@ -1,39 +1,44 @@
-import { Counter } from "./features/counter/Counter";
 import "./App.css";
-
-import React, { Suspense, lazy, useMemo } from "react";
-import {
-   BrowserRouter as Router,
-   Routes,
-   Route,
-   useNavigate,
-} from "react-router-dom";
+import { Suspense, useMemo, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Search } from "./pages/Search";
 import { Add } from "./pages/Add";
-import { Dashboard } from "./pages/Dashboard/Dashboard";
+import { Dashboard } from "./pages/Dashoard";
 import { useAppSelector } from "./app/hooks";
+import { SnackbarMsg } from "./components/SnackbarMsg";
+import { Todo } from "./pages/Todo";
+import ProtectedRoute from "./utilities/ProtectedRoute";
+import { Categories } from "./pages/Categories";
 
 function App() {
-   const navigate = useNavigate();
-   let session: any = useAppSelector((state) => state.session);
-   const checkLogin = () => {
-      if (!session || session.token) navigate(`/login`);
-   };
+   const snackbar: any = useAppSelector((state) => state.snackbar);
+   const stateAll: any = useAppSelector((state) => state);
+
+   useEffect(() => {}, [snackbar]);
+
    useMemo(() => {
-      checkLogin();
-   }, []);
+      localStorage.state = JSON.stringify(stateAll);
+      //console.log(JSON.parse(localStorage.state));
+   }, [stateAll]);
+
    return (
       <>
          <Suspense fallback={<div>Loading...</div>}>
             <Routes>
-               <Route path='/' element={<Login />} />
+               <Route path='/' element={<Navigate replace to='/login' />} />
                <Route path='/login' element={<Login />} />
-               <Route path='/dashboard' element={<Dashboard />} />
-               <Route path='/search' element={<Search text={""} />} />
-               <Route path='/add' element={<Add text={""} />} />
+
+               <Route element={<ProtectedRoute />}>
+                  <Route path='/dashboard' element={<Dashboard text={""} />} />
+                  <Route path='/search' element={<Search text={""} />} />
+                  <Route path='/add' element={<Add />} />
+                  <Route path='/todo' element={<Todo />} />
+                  <Route path='/categories' element={<Categories />} />
+               </Route>
             </Routes>
          </Suspense>
+         <SnackbarMsg snackbarState={snackbar} />
       </>
    );
 }

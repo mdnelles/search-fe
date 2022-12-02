@@ -11,30 +11,83 @@ import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { setSession } from "../features/session/sessionSlice";
+import { isValidEmail, isValidPassword } from "../utilities/validate";
+import { apiPost } from "../utilities/ApiRequest";
+import { setSnackbar } from "../features/snackbar/snackbarSlice";
+import CircularProgress from "@mui/material/CircularProgress";
+import { green } from "@mui/material/colors";
 
 const theme = createTheme();
 
 export const Login = () => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
-   let session: any = useAppSelector((state) => state.session);
+   const session: any = useAppSelector((state) => state.session);
+   const [loading, setLoading] = React.useState(false);
+   const [success, setSuccess] = React.useState(false);
 
-   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+   const buttonSx = {
+      ...(success && {
+         "bgcolor": green[500],
+         "&:hover": {
+            bgcolor: green[700],
+         },
+      }),
+   };
+
+   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      setSuccess(false);
+      setLoading(true);
       const data = new FormData(event.currentTarget);
-      console.log({
-         email: data.get("email"),
-         password: data.get("password"),
-      });
-      let userObj: object = {
-         token: new Date(),
-         email: data.get("email"),
-         displayName: "na",
-         photoUrl: "na",
-         uid: "na",
-      };
-      dispatch(setSession({ ...session, user: userObj }));
-      navigate(`/dashboard`);
+
+      const email = data.get("email");
+      const password = data.get("password");
+
+      if (isValidEmail(data.get("email")) && isValidPassword(password)) {
+         dispatch(
+            setSnackbar({
+               msg: `Testing Credentials...`,
+               isOpen: true,
+               severity: "info",
+               duration: 5500,
+            })
+         );
+         const res = await apiPost("/sv-user/login", { email, password });
+
+         if (res.data.err) {
+            dispatch(
+               setSnackbar({
+                  msg: `login failed email: ${email} & password: ***** `,
+                  isOpen: true,
+                  severity: "error",
+                  duration: 5500,
+               })
+            );
+         } else {
+            const user = {
+               email,
+               token: res.data.token,
+            };
+            dispatch(setSession({ ...session, user }));
+            setTimeout(() => navigate(`/dashboard`), 500);
+         }
+         setSuccess(true);
+         setLoading(false);
+      } else {
+         setTimeout(() => {
+            setSuccess(true);
+            setLoading(false);
+            dispatch(
+               setSnackbar({
+                  msg: `You must enter a valid email and password `,
+                  isOpen: true,
+                  severity: "error",
+                  duration: 5500,
+               })
+            );
+         }, 500);
+      }
    };
 
    return (
@@ -75,24 +128,42 @@ export const Login = () => {
                      margin='normal'
                      required
                      fullWidth
+                     type='password'
                      name='password'
                      label='Password'
-                     type='password'
                      id='password'
                      autoComplete='current-password'
                   />
-                  <Button
-                     type='submit'
-                     fullWidth
-                     variant='contained'
-                     sx={{ mt: 3, mb: 2 }}
-                     onClick={() => handleSubmit}
-                  >
-                     Sign In
-                  </Button>
+                  <Box sx={{ m: 1, position: "relative" }}>
+                     <Button
+                        type='submit'
+                        fullWidth
+                        variant='contained'
+                        sx={{ mt: 3, mb: 2 }}
+                        disabled={loading}
+                        onClick={() => handleSubmit}
+                     >
+                        Sign In
+                     </Button>
+                     {loading && (
+                        <CircularProgress
+                           size={24}
+                           sx={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              marginTop: "-12px",
+                              marginLeft: "-12px",
+                           }}
+                        />
+                     )}
+                  </Box>
                </Box>
             </Box>
          </Container>
+         <div style={{ padding: 10, textAlign: "center", color: "#eee" }}>
+            1.1.12
+         </div>
       </ThemeProvider>
    );
 };

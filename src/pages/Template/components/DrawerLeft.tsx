@@ -1,10 +1,10 @@
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import Divider from "@mui/material/Divider";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { mainListItems, secondaryListItems } from "./listItems";
-import List from "@mui/material/List";
 import { IconButton, Toolbar } from "@mui/material";
+import { LeftNav } from "./LeftNav";
+import { useNavigate } from "react-router-dom";
 
 interface DrawerLeftProps {
    drawerWidth: number | undefined;
@@ -15,6 +15,11 @@ interface DrawerLeftProps {
 
 export const DrawerLeft = (props: DrawerLeftProps) => {
    const { drawerWidth, open, variant, toggleDrawer } = props;
+   const navigate = useNavigate();
+
+   const goPage = (link: string) => {
+      navigate(link);
+   };
 
    const DrawerStyle = styled(MuiDrawer, {
       shouldForwardProp: (prop) => prop !== "open",
@@ -58,11 +63,7 @@ export const DrawerLeft = (props: DrawerLeftProps) => {
                </IconButton>
             </Toolbar>
             <Divider />
-            <List component='nav'>
-               {mainListItems}
-               <Divider sx={{ my: 1 }} />
-               {secondaryListItems}
-            </List>
+            <LeftNav goPage={goPage} />
          </DrawerStyle>
       </>
    );
