@@ -8,7 +8,7 @@ export interface SessionState {
    paused: boolean;
    toggle: boolean;
    status: "idle" | "loading" | "failed";
-   user: {} | any;
+   user: any;
    value: number;
 }
 

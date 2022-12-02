@@ -1,18 +1,13 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { setSnackbar } from "../../../../features/snackbar/snackbarSlice";
 import { rand, sqlPrep } from "../../../../utilities/gen";
 import { apiPost } from "../../../../utilities/ApiRequest";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { setSuggest } from "../../../../features/suggest/suggestSlice";
-import { setTitles } from "../../../../features/titles/titlesSlice";
-
-const emails = ["username@gmail.com", "user02@gmail.com"];
 
 const lgBg = {
    backgroundColor: "#ffffff",
@@ -32,7 +27,6 @@ export function SearchEdit(props: SearchEditProps) {
    const dispatch = useAppDispatch();
    const session: any = useAppSelector((state) => state.session);
    const suggest: any = useAppSelector((state) => state.suggest);
-   const titles: any = useAppSelector((state) => state.titles);
    const token = session.user.token;
 
    const local = suggest.arr.filter(
@@ -68,13 +62,12 @@ export function SearchEdit(props: SearchEditProps) {
 
       const main: any = document.getElementById("main");
       const data = new FormData(main);
-      //const data = new FormData(event.currentTarget);
 
       let title = data.get("title");
       let code = data.get("code");
 
-      title = sqlPrep({ s: title });
-      code = sqlPrep({ s: code });
+      title = sqlPrep(title);
+      code = sqlPrep(code);
 
       try {
          await apiPost("/sv-search/upd_entry", {
@@ -83,10 +76,6 @@ export function SearchEdit(props: SearchEditProps) {
             code,
             id,
          });
-
-         //let tmp = suggest.arr;
-         //tmp = [...tmp, { code: id, name: title, body: code }];
-         //dispatch(setSuggest({ ...suggest, arr: tmp }));
 
          dispatch(
             setSnackbar({

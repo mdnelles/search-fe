@@ -11,7 +11,7 @@ const axiosInstance = axios.create({
 });
 
 const processResponse = (res: any) => res.data;
-const processFinally = () => {};
+//const processFinally = () => {};
 const processError = (err: any) => {
    if (axios.isCancel(err)) {
       throw new axios.Cancel(err);
@@ -21,7 +21,7 @@ const processError = (err: any) => {
 };
 
 const action = (request: Promise<any>) =>
-   request.then(processResponse).catch(processError).finally(processFinally);
+   request.then(processResponse).catch(processError).finally();
 
 const getBaseHeaders = (headers = {}, axiosHeaders = {}) => ({
    headers,

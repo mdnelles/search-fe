@@ -1,21 +1,26 @@
-export const sqlPrep = ({ s }: { s: any }): string => {
-   s = s.replace(/'/gi, "`");
-   s = s.replace(/"/gi, '\\"');
-   s = s.replace(/</g, "&lt;"); //for <
-   s = s.replace(/>/g, "&gt;"); //for >
+export const sqlPrep = (s: FormDataEntryValue | null | string): string => {
+   try {
+      s === null ? (s = "") : (s = s.toString());
 
-   return s;
+      s = s.replace(/'/gi, "`");
+      s = s.replace(/"/gi, '\\"');
+      s = s.replace(/</g, "&lt;"); //for <
+      s = s.replace(/>/g, "&gt;"); //for >
+
+      return s;
+   } catch (error) {
+      console.log(error);
+      return "";
+   }
 };
 
 export const rand = (): string => {
-   const length = 20;
-   for (
-      var s = "";
-      s.length < length;
-      s +=
-         "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".charAt(
-            (Math.random() * 62) | 0
-         )
-   );
-   return s;
+   let text = "";
+   const possible =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+   for (let i = 0; i < 20; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+   return text;
 };

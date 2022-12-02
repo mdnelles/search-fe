@@ -1,2 +1,2 @@
-export const API_REMOTE: string = "https://server-search.nelles.io";
-export const API_LOCAL: string = "http://localhost:5010";
+export const API_REMOTE = "https://server-search.nelles.io";
+export const API_LOCAL = "http://localhost:5010";
