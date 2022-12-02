@@ -32,7 +32,7 @@ export const AutoComplete: FC<autoCompleteProps> = ({
    optionsStyle,
    data,
 }) => {
-   let suggest: any = useAppSelector((state) => state.suggest);
+   const suggest: any = useAppSelector((state) => state.suggest);
    const dispatch = useAppDispatch();
    const [search, setSearch] = useState({
       text: "",

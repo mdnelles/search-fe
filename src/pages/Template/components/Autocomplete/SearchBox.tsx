@@ -20,7 +20,7 @@ export const SearchBox = (): any => {
    const [options, optionsSet] = useState<OptionsType[] | []>([
       { name: "1", code: 1, body: "1" },
    ]);
-   let tmp: OptionsType[] = [];
+   const tmp: OptionsType[] = [];
 
    titles.map((t) => {
       const { id, title, code } = t;

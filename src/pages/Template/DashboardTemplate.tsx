@@ -7,7 +7,7 @@ import Container from "@mui/material/Container";
 import { DrawerLeft } from "./components/DrawerLeft";
 import { AppBarTop } from "./AppBarTop";
 
-const drawerWidth: number = 240;
+const drawerWidth = 240;
 const mdTheme = createTheme();
 
 interface DashboardTemplateProps {

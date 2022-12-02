@@ -12,8 +12,8 @@ import ProtectedRoute from "./utilities/ProtectedRoute";
 import { Categories } from "./pages/Categories";
 
 function App() {
-   let snackbar: any = useAppSelector((state) => state.snackbar);
-   let stateAll: any = useAppSelector((state) => state);
+   const snackbar: any = useAppSelector((state) => state.snackbar);
+   const stateAll: any = useAppSelector((state) => state);
 
    useEffect(() => {}, [snackbar]);
 

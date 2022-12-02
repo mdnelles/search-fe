@@ -29,15 +29,15 @@ interface TodoType {
 
 export const Todo = (): any => {
    const dispatch = useAppDispatch();
-   let todo: any = useAppSelector((state) => state.todo);
-   let token: string = useAppSelector((state) => state.session.user.token);
+   const todo: any = useAppSelector((state) => state.todo);
+   const token: string = useAppSelector((state) => state.session.user.token);
    const [title, titleSet] = useState<string>(" ");
    const [details, detailsSet] = useState<string>(" ");
    const [due, dueSet] = useState<string>(" ");
 
    const delTodo = (id: number): void => {
       if (window.confirm("Are you sure?") == true) {
-         let tmp: [] = todo.arr.filter((t: { id: number }) => t.id !== id);
+         const tmp: [] = todo.arr.filter((t: { id: number }) => t.id !== id);
 
          dispatch(setTodo({ ...todo, arr: tmp }));
          dispatch(
@@ -62,7 +62,7 @@ export const Todo = (): any => {
          })
       );
       //title, details, due
-      let resp = await apiPost("/sv-todo/add_entry", {
+      const resp = await apiPost("/sv-todo/add_entry", {
          token,
          title,
          details,

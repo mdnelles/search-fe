@@ -27,8 +27,8 @@ interface catType {
 
 export const Categories = (): any => {
    const dispatch = useAppDispatch();
-   let categories: any = useAppSelector((state) => state.stype);
-   let token: string = useAppSelector((state) => state.session.user.token);
+   const categories: any = useAppSelector((state) => state.stype);
+   const token: string = useAppSelector((state) => state.session.user.token);
    const [name, setName] = React.useState("");
    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
       setName(event.target.value);
@@ -36,7 +36,7 @@ export const Categories = (): any => {
 
    const delCat = (id: number): void => {
       if (window.confirm("Are you sure?") == true) {
-         let tmp: [] = categories.arr.filter(
+         const tmp: [] = categories.arr.filter(
             (cats: { id: number; ttype: string }) => cats.id !== id
          );
 
@@ -62,7 +62,7 @@ export const Categories = (): any => {
             duration: 3000,
          })
       );
-      let resp = await apiPost("/sv-search/add_cat", {
+      const resp = await apiPost("/sv-search/add_cat", {
          token,
          category: name,
       });
