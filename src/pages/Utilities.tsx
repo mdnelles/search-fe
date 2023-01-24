@@ -2,7 +2,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import React from "react";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
-import { sqlToNoSql } from "../utilities/functions";
+import { generateNestSchema, sqlToNoSql } from "../utilities/functions";
 
 export default function Utilities(): JSX.Element {
    const [sql, setSql] = React.useState<string>("");
@@ -10,13 +10,12 @@ export default function Utilities(): JSX.Element {
 
    const startSql = (sql: string) => {
       setSql(sql);
-      setNoSql(sqlToNoSql(sql));
-      console.log(sqlToNoSql(sql));
+      setNoSql(generateNestSchema(sql));
    };
    return (
       <DashboardTemplate>
          <div id='main' className='body'>
-            <h3>SQL NoSQL Conversion</h3> <br />
+            <h3>generateNestSchema</h3> <br />
             <div>
                {/* install Grid with two rows and two colums*/}
                <Grid
