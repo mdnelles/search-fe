@@ -1,37 +1,45 @@
 export function capitalizeFirstLetter(str: string): string {
+   return removeQuotes(str.charAt(0).toUpperCase() + str.slice(1));
+}
+export function removeQuotes(str: string): string {
    // remove all quotes from str
    str = str.replace(/['"]+/g, "");
    // remove back ticks from str
    str = str.replace(/[`]+/g, "");
-   console.log(str.charAt(0).toUpperCase() + str.slice(1));
-   return str.charAt(0).toUpperCase() + str.slice(1);
+   console.log(str);
+   return str;
 }
+export const getName = (str: string) => {
+   // replace single quotes with backticks
+   str = str.replace(/['"]+/g, "`");
+
+   const arr = str.split("`");
+   return removeQuotes(arr[1]);
+};
 
 export const generateNestSchema = (sql: string) => {
-   const arr = sql.split(" ");
+   const arr = sql.split("\n");
    let TableName = "";
    let props = "";
    let name = "";
+   console.log(arr);
    arr.forEach((e) => {
+      console.log(e);
       if (e.toString().includes("CREATE")) {
-         TableName = capitalizeFirstLetter(arr[arr.indexOf(e) + 2]);
+         TableName = capitalizeFirstLetter(getName(e));
       } else if (
          e.toString().includes("char(") ||
          e.toString().includes("text") ||
          e.toString().includes("char")
       ) {
-         name = arr[arr.indexOf(e) - 1];
-         props += ` 
-        @Prop()
-        ${name}: string;`;
+         name = getName(e);
+         props += "\t@Prop()\n\t" + name + ": string;\n\n";
       } else if (
          e.toString().includes("int(") ||
          e.toString().includes("float")
       ) {
-         name = arr[arr.indexOf(e) - 1];
-         props += ` 
-        @Prop()
-        ${name}: number;`;
+         name = getName(e);
+         props += "\t@Prop()\n\t" + name + ": number;\n\n";
       }
    });
 
