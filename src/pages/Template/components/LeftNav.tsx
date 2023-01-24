@@ -8,6 +8,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CategoryIcon from "@mui/icons-material/Category";
+import BuildCircleIcon from "@mui/icons-material/BuildCircle";
+
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
 
@@ -45,6 +47,12 @@ export const LeftNav = (props: LeftNavProps) => {
                   <CheckCircleIcon />
                </ListItemIcon>
                <ListItemText primary='Todo List' />
+            </ListItemButton>
+            <ListItemButton onClick={() => goPage(`/utils`)}>
+               <ListItemIcon>
+                  <BuildCircleIcon />
+               </ListItemIcon>
+               <ListItemText primary='Utilities' />
             </ListItemButton>
 
             <Divider sx={{ my: 1 }} />

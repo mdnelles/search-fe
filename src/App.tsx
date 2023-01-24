@@ -10,6 +10,7 @@ import { SnackbarMsg } from "./components/SnackbarMsg";
 import { Todo } from "./pages/Todo";
 import ProtectedRoute from "./utilities/ProtectedRoute";
 import { Categories } from "./pages/Categories";
+import Utilities from "./pages/Utilities";
 
 function App() {
    const snackbar: any = useAppSelector((state) => state.snackbar);
@@ -35,6 +36,7 @@ function App() {
                   <Route path='/add' element={<Add />} />
                   <Route path='/todo' element={<Todo />} />
                   <Route path='/categories' element={<Categories />} />
+                  <Route path='/utils' element={<Utilities />} />
                </Route>
             </Routes>
          </Suspense>
