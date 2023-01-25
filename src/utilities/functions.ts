@@ -54,6 +54,76 @@ export class ${TableName} {
 export const ${TableName}Schema = SchemaFactory.createForClass(${TableName});`;
 };
 
+export const generateNestInterface = (sql: string) => {
+   const arr = sql.split("\n");
+   let TableName = "";
+   let props = "";
+   let name = "";
+   console.log(arr);
+   arr.forEach((e) => {
+      console.log(e);
+      if (e.toString().includes("CREATE")) {
+         TableName = capitalizeFirstLetter(getName(e));
+      } else if (
+         e.toString().includes("char(") ||
+         e.toString().includes("text") ||
+         e.toString().includes("char")
+      ) {
+         name = getName(e);
+         props += "\n\treadonly " + name + ": string;";
+      } else if (
+         e.toString().includes("int(") ||
+         e.toString().includes("float")
+      ) {
+         name = getName(e);
+         props += "\n\treadonly " + name + ": number;";
+      }
+   });
+
+   return `
+import { Document } from 'mongoose';
+export interface I${TableName} extends Document{${props}
+}`;
+};
+
+export const generateNestDTO = (sql: string) => {
+   const arr = sql.split("\n");
+   let TableName = "";
+   let props = "";
+   let name = "";
+   console.log(arr);
+   arr.forEach((e) => {
+      console.log(e);
+      if (e.toString().includes("CREATE")) {
+         TableName = capitalizeFirstLetter(getName(e));
+      } else if (
+         e.toString().includes("char(") ||
+         e.toString().includes("text") ||
+         e.toString().includes("char")
+      ) {
+         name = getName(e);
+         props +=
+            "\n\t@IsString()\n\t@MaxLength(30)\n\t@IsNotEmpty()\n\treadonly " +
+            name +
+            ": string;\n";
+      } else if (
+         e.toString().includes("int(") ||
+         e.toString().includes("float")
+      ) {
+         name = getName(e);
+         props +=
+            "\n\t@IsNumber()\n\t@IsNotEmpty()\n\treadonly " +
+            name +
+            ": number;\n";
+      }
+   });
+
+   return `
+import { IsNotEmpty, IsNumber, IsString, MaxmarksLength, MaxLength  } from "class-validator";
+export class Create${TableName}Dto {${props}
+}`;
+};
+
 export const sqlToNoSql = (sql: string) => {
    const arr = sql.split(" ");
    let nosql = "";
