@@ -1,3 +1,5 @@
+import { rand, randNum } from "./gen";
+
 export function capitalizeFirstLetter(str: string): string {
    return removeQuotes(str.charAt(0).toUpperCase() + str.slice(1));
 }
@@ -121,6 +123,39 @@ export const generateNestDTO = (sql: string) => {
    return `
 import { IsNotEmpty, IsNumber, IsString, MaxmarksLength, MaxLength  } from "class-validator";
 export class Create${TableName}Dto {${props}
+}`;
+};
+
+export const generateNestDoc = (sql: string) => {
+   const arr = sql.split("\n");
+   let props = "";
+   let name = "";
+   console.log(arr);
+   arr.forEach((e) => {
+      console.log(e);
+      if (e.toString().includes("CREATE")) {
+         //TableName = capitalizeFirstLetter(getName(e));
+      } else if (
+         e.toString().includes("char(") ||
+         e.toString().includes("text") ||
+         e.toString().includes("char")
+      ) {
+         name = getName(e);
+         props += '\t"' + name + '":"' + rand() + '",\n';
+      } else if (
+         e.toString().includes("int(") ||
+         e.toString().includes("float")
+      ) {
+         name = getName(e);
+         props += '\t"' + name + '":' + randNum(4) + ",\n";
+      }
+   });
+
+   // remove last two characters from props
+   props = props.slice(0, -2);
+
+   return `{
+   ${props}
 }`;
 };
 

@@ -4,6 +4,7 @@ import React from "react";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
 import {
    generateNestDTO,
+   generateNestDoc,
    generateNestInterface,
    generateNestSchema,
    sqlToNoSql,
@@ -14,12 +15,14 @@ export default function Utilities(): JSX.Element {
    const [schema, setSchema] = React.useState<string>("");
    const [interfce, setInterfce] = React.useState<string>("");
    const [dto, setDTO] = React.useState<string>("");
+   const [document, setDocument] = React.useState<string>("");
 
    const startSql = (sql: string) => {
       setSql(sql);
       setSchema(generateNestSchema(sql));
       setInterfce(generateNestInterface(sql));
       setDTO(generateNestDTO(sql));
+      setDocument(generateNestDoc(sql));
    };
    return (
       <DashboardTemplate>
@@ -84,6 +87,20 @@ export default function Utilities(): JSX.Element {
                         }}
                      />
                   </Grid>
+                  <Grid item xs={6}>
+                     <TextField
+                        id='document'
+                        label='NoSQL document'
+                        multiline
+                        rows='10'
+                        defaultValue={document}
+                        fullWidth={true}
+                        onChange={(event) => {
+                           setDocument(event.target.value);
+                        }}
+                     />
+                  </Grid>
+                  <Grid item xs={6}></Grid>
                </Grid>
             </div>
          </div>

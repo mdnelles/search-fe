@@ -24,3 +24,14 @@ export const rand = (): string => {
 
    return text;
 };
+
+export const randNum = (digits: number): string => {
+   const trueDigits = digits ? digits : 10;
+   let text = "";
+   const possible = "0123456789";
+
+   for (let i = 0; i < trueDigits; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+   return text;
+};
