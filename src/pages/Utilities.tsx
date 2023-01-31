@@ -29,7 +29,6 @@ export default function Utilities(): JSX.Element {
          <div id='main' className='body'>
             <h3>Generate Nest Files</h3> <br />
             <div>
-               {/* install Grid with two rows and two colums*/}
                <Grid
                   container
                   rowSpacing={1}
