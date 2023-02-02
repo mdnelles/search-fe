@@ -9,15 +9,18 @@ import {
    generateNestSchema,
    sqlToNoSql,
 } from "../utilities/functions";
+import Button from "@mui/material/Button";
 
 export default function Utilities(): JSX.Element {
-   const [sql, setSql] = React.useState<string>("");
+   const [sql, setSql] = React.useState<string>(
+      "CREATE TABLE `details` (\n`id` int(11) NOT NULL,\n`lName` varchar(222) NOT NULL,\n) ENGINE=InnoDB DEFAULT CHARSET=latin1;"
+   );
    const [schema, setSchema] = React.useState<string>("");
    const [interfce, setInterfce] = React.useState<string>("");
    const [dto, setDTO] = React.useState<string>("");
    const [document, setDocument] = React.useState<string>("");
 
-   const startSql = (sql: string) => {
+   const startSql = () => {
       setSql(sql);
       setSchema(generateNestSchema(sql));
       setInterfce(generateNestInterface(sql));
@@ -34,6 +37,9 @@ export default function Utilities(): JSX.Element {
                   rowSpacing={1}
                   columnSpacing={{ xs: 1, sm: 2, md: 3 }}
                >
+                  <Grid item xs={12}>
+                     <Button onClick={() => startSql()}>Generate</Button>
+                  </Grid>
                   <Grid item xs={6}>
                      <TextField
                         id='sql'
@@ -43,7 +49,7 @@ export default function Utilities(): JSX.Element {
                         defaultValue={sql}
                         fullWidth={true}
                         onChange={(event) => {
-                           startSql(event.target.value);
+                           setSql(event.target.value);
                         }}
                      />
                   </Grid>
