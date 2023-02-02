@@ -3,7 +3,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
 import React from "react";
-import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { useAppDispatch } from "../../../app/hooks";
 import { useNavigate } from "react-router-dom";
 import { setSnackbar } from "../../../features/snackbar/snackbarSlice";
 import { clearSession } from "../../../features/session/sessionSlice";
@@ -16,7 +16,6 @@ import { clearSuggest } from "../../../features/suggest/suggestSlice";
 export const ProfileNav = (): any => {
    const navigate = useNavigate();
    const dispatch = useAppDispatch();
-   const session: any = useAppSelector((state) => state.session);
    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
    const open = Boolean(anchorEl);
 

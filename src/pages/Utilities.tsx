@@ -7,13 +7,12 @@ import {
    generateNestDoc,
    generateNestInterface,
    generateNestSchema,
-   sqlToNoSql,
 } from "../utilities/functions";
 import Button from "@mui/material/Button";
 
 export default function Utilities(): JSX.Element {
    const [sql, setSql] = React.useState<string>(
-      "CREATE TABLE `details` (\n`id` int(11) NOT NULL,\n`lName` varchar(222) NOT NULL,\n) ENGINE=InnoDB DEFAULT CHARSET=latin1;"
+      "CREATE TABLE `!!!!!!!!!!!!` (\n`id` int(11) NOT NULL,\n`lName` varchar(222) NOT NULL,\n) ENGINE=InnoDB DEFAULT CHARSET=latin1;"
    );
    const [schema, setSchema] = React.useState<string>("");
    const [interfce, setInterfce] = React.useState<string>("");

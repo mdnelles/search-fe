@@ -15,7 +15,6 @@ import { isValidEmail, isValidPassword } from "../utilities/validate";
 import { apiPost } from "../utilities/ApiRequest";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import CircularProgress from "@mui/material/CircularProgress";
-import { green } from "@mui/material/colors";
 
 const theme = createTheme();
 
@@ -25,15 +24,6 @@ export const Login = () => {
    const session: any = useAppSelector((state) => state.session);
    const [loading, setLoading] = React.useState(false);
    const [success, setSuccess] = React.useState(false);
-
-   const buttonSx = {
-      ...(success && {
-         "bgcolor": green[500],
-         "&:hover": {
-            bgcolor: green[700],
-         },
-      }),
-   };
 
    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -116,6 +106,7 @@ export const Login = () => {
                >
                   <TextField
                      margin='normal'
+                     size='small'
                      required
                      fullWidth
                      id='email'
@@ -125,7 +116,7 @@ export const Login = () => {
                      autoFocus
                   />
                   <TextField
-                     margin='normal'
+                     size='small'
                      required
                      fullWidth
                      type='password'
@@ -134,12 +125,12 @@ export const Login = () => {
                      id='password'
                      autoComplete='current-password'
                   />
-                  <Box sx={{ m: 1, position: "relative" }}>
+                  <Box sx={{ position: "relative" }}>
                      <Button
                         type='submit'
                         fullWidth
                         variant='contained'
-                        sx={{ mt: 3, mb: 2 }}
+                        sx={{ mt: 2, mb: 2 }}
                         disabled={loading}
                         onClick={() => handleSubmit}
                      >
@@ -162,7 +153,7 @@ export const Login = () => {
             </Box>
          </Container>
          <div style={{ padding: 10, textAlign: "center", color: "#eee" }}>
-            1.1.13
+            1.1.15
          </div>
       </ThemeProvider>
    );

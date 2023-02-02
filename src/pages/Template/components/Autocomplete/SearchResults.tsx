@@ -117,10 +117,6 @@ export const SearchResults = (props: SearchResultsProp): any => {
       );
    };
 
-   const handleClickOpen = () => {
-      openSet(true);
-   };
-
    const handleClose = (value: string) => {
       openSet(false);
       setSelectedValue(value);
