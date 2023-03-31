@@ -8,7 +8,7 @@ export interface SnackbarState {
    isOpen?: boolean | undefined;
 }
 
-export const initialState: SnackbarState | any = {
+const initialState: SnackbarState | any = {
    msg: "no message",
    severity: "info",
    duration: 6000,
