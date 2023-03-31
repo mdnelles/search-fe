@@ -11,16 +11,16 @@ import { Todo } from "./pages/Todo";
 import ProtectedRoute from "./utilities/ProtectedRoute";
 import { Categories } from "./pages/Categories";
 import Utilities from "./pages/Utilities";
+import { SnackbarState } from "./features/snackbar/snackbarSlice";
 
 function App() {
-   const snackbar: any = useAppSelector((state) => state.snackbar);
+   const snackbar:SnackbarState  = useAppSelector((state) => state.snackbar);
    const stateAll: any = useAppSelector((state) => state);
 
    useEffect(() => {}, [snackbar]);
 
    useMemo(() => {
       localStorage.state = JSON.stringify(stateAll);
-      //console.log(JSON.parse(localStorage.state));
    }, [stateAll]);
 
    return (
