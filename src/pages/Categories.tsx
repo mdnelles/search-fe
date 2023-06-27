@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import React from "react";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
 import List from "@mui/material/List";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import ListItem from "@mui/material/ListItem";
 import IconButton from "@mui/material/IconButton";
 import ListItemAvatar from "@mui/material/ListItemAvatar";

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RootState, AppThunk } from "../../app/store";
+import { RootState, AppThunk } from "../../redux/store";
 
 export interface SnackbarState {
    msg: string | undefined;

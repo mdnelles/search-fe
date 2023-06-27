@@ -1,6 +1,6 @@
 import Box from "@mui/material/Box";
 import React, { useEffect } from "react";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../redux/hooks";
 import { SearchBox } from "./Template/components/Autocomplete/SearchBox";
 import { SearchResults } from "./Template/components/Autocomplete/SearchResults";
 import { DashboardTemplate } from "./Template/DashboardTemplate";

@@ -5,7 +5,7 @@ import { Login } from "./pages/Login";
 import { Search } from "./pages/Search";
 import { Add } from "./pages/Add";
 import { Dashboard } from "./pages/Dashoard";
-import { useAppSelector } from "./app/hooks";
+import { useAppSelector } from "./redux/hooks";
 import { SnackbarMsg } from "./components/SnackbarMsg";
 import { Todo } from "./pages/Todo";
 import ProtectedRoute from "./utilities/ProtectedRoute";
@@ -14,7 +14,7 @@ import Utilities from "./pages/Utilities";
 import { SnackbarState } from "./features/snackbar/snackbarSlice";
 
 function App() {
-   const snackbar:SnackbarState  = useAppSelector((state) => state.snackbar);
+   const snackbar: SnackbarState = useAppSelector((state) => state.snackbar);
    const stateAll: any = useAppSelector((state) => state);
 
    useEffect(() => {}, [snackbar]);

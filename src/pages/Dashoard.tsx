@@ -1,5 +1,5 @@
 import { DashboardTemplate } from "./Template/DashboardTemplate";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import Box from "@mui/material/Box";
 import LinearProgress from "@mui/material/LinearProgress";
 import Paper from "@mui/material/Paper";

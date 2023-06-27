@@ -3,7 +3,7 @@ import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
-import { useAppDispatch } from "../app/hooks";
+import { useAppDispatch } from "../redux/hooks";
 import Alert from "@mui/material/Alert";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import { useEffect } from "react";

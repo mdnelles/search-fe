@@ -1,6 +1,6 @@
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../app/hooks";
+import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
 import { setSnackbar } from "../../../../features/snackbar/snackbarSlice";
 import { setTitles } from "../../../../features/titles/titlesSlice";
 import { apiPost } from "../../../../utilities/ApiRequest";

@@ -3,7 +3,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
 import React from "react";
-import { useAppDispatch } from "../../../app/hooks";
+import { useAppDispatch } from "../../../redux/hooks";
 import { useNavigate } from "react-router-dom";
 import { setSnackbar } from "../../../features/snackbar/snackbarSlice";
 import { clearSession } from "../../../features/session/sessionSlice";

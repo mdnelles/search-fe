@@ -1,5 +1,5 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../redux/hooks";
 import { isValidSession } from "./validate";
 
 const ProtectedRoute = () => {

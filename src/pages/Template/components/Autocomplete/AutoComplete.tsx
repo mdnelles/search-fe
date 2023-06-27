@@ -1,6 +1,6 @@
 import react, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
-import { useAppDispatch } from "../../../../app/hooks";
+import { useAppDispatch } from "../../../../redux/hooks";
 import { setSuggest } from "../../../../features/suggest/suggestSlice";
 import { rand } from "../../../../utilities/gen";
 
