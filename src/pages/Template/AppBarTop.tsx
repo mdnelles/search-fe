@@ -4,7 +4,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { ProfileNav } from "./components/ProfileNav";
+import { ProfileNav } from "../../components/ProfileNav";
 
 interface AppBarTopProps {
    drawerWidth?: any;

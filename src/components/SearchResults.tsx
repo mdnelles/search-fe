@@ -1,13 +1,14 @@
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
-import { setSnackbar } from "../../../../features/snackbar/snackbarSlice";
-import { setTitles } from "../../../../features/titles/titlesSlice";
-import { apiPost } from "../../../../utilities/ApiRequest";
-import { rand } from "../../../../utilities/gen";
-import { SearchEdit } from "../dialogs/SearchEdit";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { setSnackbar } from "../features/snackbar/snackbarSlice";
+import { setTitles } from "../features/titles/titlesSlice";
+import { apiPost } from "../utilities/ApiRequest";
+import { rand } from "../utilities/gen";
+import { SearchEdit } from "./dialogs/SearchEdit";
 
 interface TitleType {
+   _id: string;
    id: number;
    title: string;
    date1: string;
@@ -60,7 +61,8 @@ export const SearchResults = (props: SearchResultsProp): any => {
    const [idEdit, idEditSet] = useState<number>(0);
    const [selectedValue, setSelectedValue] = useState("");
 
-   const delEntryStart = async (event: any, id: any) => {
+   const handleDelete = async (event: any, _id: any) => {
+      console.log(_id);
       event.preventDefault();
 
       dispatch(
@@ -74,15 +76,15 @@ export const SearchResults = (props: SearchResultsProp): any => {
       try {
          await apiPost("/sv-search/del_entry", {
             token,
-            id,
+            _id,
          });
-         dispatch(setTitles(titles.filter((ti: any) => ti.id === id)));
+         dispatch(setTitles(titles.filter((ti: any) => ti._id === _id)));
          dispatch(
             setSnackbar({
                msg: `Database record deleted...`,
                isOpen: true,
                severity: "success",
-               duration: 5500,
+               duration: 2500,
             })
          );
       } catch (error) {
@@ -91,7 +93,7 @@ export const SearchResults = (props: SearchResultsProp): any => {
    };
 
    const Display = (obj: TitleType | any) => {
-      const { name, body, code } = obj.entry;
+      const { name, body, code, _id } = obj.entry;
       return (
          <div key={"i-" + code}>
             <div style={entryWrapper}>
@@ -108,7 +110,7 @@ export const SearchResults = (props: SearchResultsProp): any => {
                   >
                      Edit!
                   </Button>
-                  <Button onClick={(event) => delEntryStart(event, code)}>
+                  <Button onClick={(event) => handleDelete(event, _id)}>
                      Delete
                   </Button>
                </div>

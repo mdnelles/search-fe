@@ -1,8 +1,8 @@
 import Box from "@mui/material/Box";
 import React, { useEffect } from "react";
 import { useAppSelector } from "../redux/hooks";
-import { SearchBox } from "./Template/components/Autocomplete/SearchBox";
-import { SearchResults } from "./Template/components/Autocomplete/SearchResults";
+import { SearchBox } from "../components/Autocomplete/SearchBox";
+import { SearchResults } from "../components/SearchResults";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
 
 interface SearchProps {

@@ -1,14 +1,14 @@
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import { useAppDispatch, useAppSelector } from "../../../../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { useState } from "react";
-import { setSnackbar } from "../../../../features/snackbar/snackbarSlice";
-import { rand, sqlPrep } from "../../../../utilities/gen";
-import { apiPost } from "../../../../utilities/ApiRequest";
+import { setSnackbar } from "../../features/snackbar/snackbarSlice";
+import { rand, sqlPrep } from "../../utilities/gen";
+import { apiPost } from "../../utilities/ApiRequest";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { setTitles } from "../../../../features/titles/titlesSlice";
+import { setTitles } from "../../features/titles/titlesSlice";
 
 const lgBg = {
    backgroundColor: "#ffffff",

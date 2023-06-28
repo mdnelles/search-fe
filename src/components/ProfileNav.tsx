@@ -3,15 +3,15 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import PersonIcon from "@mui/icons-material/Person";
 import React from "react";
-import { useAppDispatch } from "../../../redux/hooks";
+import { useAppDispatch } from "../redux/hooks";
 import { useNavigate } from "react-router-dom";
-import { setSnackbar } from "../../../features/snackbar/snackbarSlice";
-import { clearSession } from "../../../features/session/sessionSlice";
-import { clearTitles } from "../../../features/titles/titlesSlice";
-import { clearTodo } from "../../../features/todo/todoSlice";
-import { clearNote } from "../../../features/note/noteSlice";
-import { clearSearchTypes } from "../../../features/stype/stypeSlice";
-import { clearSuggest } from "../../../features/suggest/suggestSlice";
+import { setSnackbar } from "../features/snackbar/snackbarSlice";
+import { clearSession } from "../features/session/sessionSlice";
+import { clearTitles } from "../features/titles/titlesSlice";
+import { clearTodo } from "../features/todo/todoSlice";
+import { clearNote } from "../features/note/noteSlice";
+import { clearSearchTypes } from "../features/stype/stypeSlice";
+import { clearSuggest } from "../features/suggest/suggestSlice";
 
 export const ProfileNav = (): any => {
    const navigate = useNavigate();

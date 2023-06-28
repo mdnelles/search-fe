@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAppSelector } from "../../../../redux/hooks";
+import { useAppSelector } from "../../redux/hooks";
 import { AutoComplete } from "./AutoComplete";
 
 interface TitleType {

@@ -8,7 +8,7 @@ import HourglassTopIcon from "@mui/icons-material/HourglassTop";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import { apiPost } from "../utilities/ApiRequest";
 import { clearTitles, setTitles } from "../features/titles/titlesSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { clearTodo, setTodo } from "../features/todo/todoSlice";
 import { setSearchTypes } from "../features/stype/stypeSlice";
 import Button from "@mui/material/Button";
@@ -65,44 +65,47 @@ export const Dashboard = (props: DashboardProps) => {
    const handleReloadTitles = () => dispatch(clearTitles());
    const handleReloadTodo = () => dispatch(clearTodo());
 
-   setTimeout(() => {
-      // delay to allow parent render
+   useEffect(() => {
+      setTimeout(() => {
+         // delay to allow parent render
 
-      dispatch(setSnackbar({ isOpen: false }));
+         dispatch(setSnackbar({ isOpen: false }));
 
-      (async () => {
-         if (!titles.init) {
-            dispatch(setTitles({ arr: [], init: true }));
-            const titlesRes = await apiPost("/sv-search/get_titles", {
-               token,
-            });
-            if (!titlesRes.data.err && !titles.init) {
-               dispatch(setTitles({ arr: titlesRes.data.data, init: true }));
-               titlesMsgSet(<Success />);
+         (async () => {
+            if (!titles.init) {
+               dispatch(setTitles({ arr: [], init: true }));
+               const titlesRes = await apiPost("/sv-search/get_titles", {
+                  token,
+               });
+               if (!titlesRes.data.err && !titles.init) {
+                  dispatch(setTitles({ arr: titlesRes.data.data, init: true }));
+                  titlesMsgSet(<Success />);
+               }
             }
-         }
-      })();
-      (async () => {
-         if (!todo.init) {
-            const todoRes = await apiPost("/sv-todo/get_todo", { token });
-            if (!todoRes.data.err && !todo.init) {
-               dispatch(setTodo({ arr: todoRes.data.data, init: true }));
-               todoMsgSet(<Success />);
+         })();
+         (async () => {
+            if (!todo.init) {
+               const todoRes = await apiPost("/sv-todo/get_todo", { token });
+               if (!todoRes.data.err && !todo.init) {
+                  dispatch(setTodo({ arr: todoRes.data.data, init: true }));
+                  todoMsgSet(<Success />);
+               }
             }
-         }
-      })();
-      (async () => {
-         if (!stype.init) {
-            const stypeRes = await apiPost("/sv-search/get_ttypes", { token });
-            if (!stypeRes.data.err && !stype.init) {
-               dispatch(
-                  setSearchTypes({ arr: stypeRes.data.data, init: true })
-               );
-               stypeMsgSet(<Success />);
+         })();
+         (async () => {
+            if (!stype.init) {
+               const stypeRes = await apiPost("/sv-search/get_ttypes", {
+                  token,
+               });
+               if (!stypeRes.data.err && !stype.init) {
+                  dispatch(
+                     setSearchTypes({ arr: stypeRes.data.data, init: true })
+                  );
+                  stypeMsgSet(<Success />);
+               }
             }
-         }
-      })();
-      /*
+         })();
+         /*
       (async () => {
          if (!note.txt) {
             const noteRes = await apiPost("/sv-note/fetch", { token });
@@ -112,7 +115,8 @@ export const Dashboard = (props: DashboardProps) => {
             }
          }
       })();*/
-   }, 100);
+      }, 100);
+   }, []);
 
    return (
       <DashboardTemplate>
