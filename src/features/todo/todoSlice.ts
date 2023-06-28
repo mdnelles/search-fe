@@ -26,7 +26,7 @@ export const todoSlice = createSlice({
    reducers: {
       setTodo: (state, action: PayloadAction<any>) => {
          try {
-            console.log(action.payload);
+            //console.log(action.payload);
             state.arr = action.payload.arr;
             state.init = action.payload.init;
          } catch (error) {

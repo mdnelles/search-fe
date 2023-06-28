@@ -3,6 +3,7 @@ import { useAppSelector } from "../../redux/hooks";
 import { AutoComplete } from "./AutoComplete";
 
 interface TitleType {
+   _id: string;
    id: number | never;
    title: string;
    date: string;
@@ -10,23 +11,25 @@ interface TitleType {
 }
 
 interface OptionsType {
-   name: string;
-   code: number | never;
-   body: string;
+   _id: string;
+   subject: string;
+   code: string;
 }
 
 export const SearchBox = (): any => {
-   const titles: TitleType[] | [] = useAppSelector((state) => state.titles.arr);
+   const titles: TitleType[] | [] = useAppSelector(
+      (state: any) => state.titles.arr
+   );
    const [options, optionsSet] = useState<OptionsType[] | []>([
-      { name: "1", code: 1, body: "1" },
+      { _id: "", subject: "", code: "" },
    ]);
    const tmp: OptionsType[] = [];
 
-   titles.map((t) => {
-      const { id, title, code } = t;
-      tmp.push({ name: title, code: id, body: code });
-   });
    try {
+      titles.map((t) => {
+         const { _id, title, code } = t;
+         tmp.push({ _id, subject: title, code });
+      });
       if (tmp.length !== options.length) optionsSet(tmp);
    } catch (error) {
       console.log(error);

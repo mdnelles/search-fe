@@ -44,8 +44,8 @@ export const SnackbarMsg = (props: SnackMsgProps) => {
    );
 
    useEffect(() => {
-      console.log("UE inside snack");
-      console.log(snackbarState);
+      // console.log("UE inside snack");
+      // console.log(snackbarState);
    }, []);
 
    return (

@@ -9,6 +9,7 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { setTitles } from "../../features/titles/titlesSlice";
+import { setSuggest } from "../../features/suggest/suggestSlice";
 
 const lgBg = {
    backgroundColor: "#ffffff",
@@ -24,7 +25,7 @@ export interface SearchEditProps {
 }
 
 export function SearchEdit(props: SearchEditProps) {
-   const { open, selectedValue, onClose, id } = props;
+   const { open, selectedValue, onClose, id: _id } = props;
    const dispatch = useAppDispatch();
    const session: any = useAppSelector((state) => state.session);
    const suggest: any = useAppSelector((state) => state.suggest);
@@ -32,7 +33,7 @@ export function SearchEdit(props: SearchEditProps) {
    const token = session.user.token;
 
    const local = suggest.arr.filter(
-      (s: { code: number; name: string; body: string }) => s.code === id
+      (s: { code: number; name: string; body: string }) => s.code === _id
    );
 
    const [title, setTitle] = useState<string>(
@@ -50,7 +51,7 @@ export function SearchEdit(props: SearchEditProps) {
 
    // - useEffect(() => {}, [title, code]);
 
-   const editEntryStart = async (event: any) => {
+   const handleEdit = async (event: any) => {
       event.preventDefault();
 
       dispatch(
@@ -76,7 +77,7 @@ export function SearchEdit(props: SearchEditProps) {
             token,
             title,
             code,
-            id,
+            _id,
          });
 
          dispatch(
@@ -90,8 +91,8 @@ export function SearchEdit(props: SearchEditProps) {
          dispatch(
             setTitles(
                titles.map((ti: any) => {
-                  ti.id === id
-                     ? { id: ti.id, title: ti.title, code: ti.code }
+                  ti._id === _id
+                     ? { _id: ti._id, title: ti.title, code: ti.code }
                      : ti;
                })
             )
@@ -101,7 +102,7 @@ export function SearchEdit(props: SearchEditProps) {
       }
    };
 
-   const delEntryStart = async (event: any) => {
+   const handleDelete = async (event: any) => {
       event.preventDefault();
 
       dispatch(
@@ -115,9 +116,10 @@ export function SearchEdit(props: SearchEditProps) {
       try {
          await apiPost("/sv-search/del_entry", {
             token,
-            id,
+            _id,
          });
-         dispatch(setTitles(titles.filter((ti: any) => ti.id === id)));
+         dispatch(setTitles(titles.filter((ti: any) => ti._id === _id)));
+         dispatch(setSuggest(suggest.filter((s: any) => s._id === _id)));
          dispatch(
             setSnackbar({
                msg: `Database record deleted...`,
@@ -174,12 +176,10 @@ export function SearchEdit(props: SearchEditProps) {
                      <Grid item xs={12}>
                         <div style={{ padding: 5 }}>
                            <ButtonGroup variant='contained' color='secondary'>
-                              <Button
-                                 onClick={(event) => editEntryStart(event)}
-                              >
+                              <Button onClick={(event) => handleEdit(event)}>
                                  Edit Entry
                               </Button>
-                              <Button onClick={(event) => delEntryStart(event)}>
+                              <Button onClick={(event) => handleDelete(event)}>
                                  Delete
                               </Button>
                            </ButtonGroup>

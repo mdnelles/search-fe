@@ -54,7 +54,7 @@ export const SearchResults = (props: SearchResultsProp): any => {
    const { suggest = [] } = props;
    const dispatch = useAppDispatch();
    const session: any = useAppSelector((state) => state.session);
-   const titles: any = useAppSelector((state) => state.titles);
+   const titles: any = useAppSelector((state) => state.titles.arr);
    const token = session.user.token;
 
    const [open, openSet] = useState(false);
@@ -78,7 +78,12 @@ export const SearchResults = (props: SearchResultsProp): any => {
             token,
             _id,
          });
-         dispatch(setTitles(titles.filter((ti: any) => ti._id === _id)));
+         dispatch(
+            setTitles({
+               ...titles,
+               arr: titles.filter((ti: any) => ti._id !== _id),
+            })
+         );
          dispatch(
             setSnackbar({
                msg: `Database record deleted...`,
@@ -93,18 +98,18 @@ export const SearchResults = (props: SearchResultsProp): any => {
    };
 
    const Display = (obj: TitleType | any) => {
-      const { name, body, code, _id } = obj.entry;
+      const { subject, code, _id } = obj.entry;
       return (
-         <div key={"i-" + code}>
+         <div key={"e-" + _id}>
             <div style={entryWrapper}>
                <div style={entryTitle} onClick={() => tog(code)}>
-                  {name}
+                  {subject}
                </div>
                <div style={entryBody} id={"b-" + code}>
-                  <pre>{body}</pre>
+                  <pre>{code}</pre>
                   <Button
                      onClick={() => {
-                        idEditSet(code);
+                        idEditSet(_id);
                         openSet(true);
                      }}
                   >
@@ -129,9 +134,9 @@ export const SearchResults = (props: SearchResultsProp): any => {
          <b>Search Results</b>
          {!suggest || !suggest.arr
             ? null
-            : suggest.arr.map((t: any) => (
-                 <Display entry={t} key={"kk-" + rand()} />
-              ))}
+            : suggest.arr.map((t: any) => {
+                 return <Display entry={t} key={"kk-" + rand()} />;
+              })}
          {idEdit === 0 ? null : (
             <SearchEdit
                selectedValue={selectedValue}

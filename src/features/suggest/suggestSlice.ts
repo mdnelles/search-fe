@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 
 interface Arr {
+   _id: string;
    id: number;
    title: string;
    date: string;
