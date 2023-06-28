@@ -58,7 +58,7 @@ export const SearchResults = (props: SearchResultsProp): any => {
    const token = session.user.token;
 
    const [open, openSet] = useState(false);
-   const [idEdit, idEditSet] = useState<number>(0);
+   const [idEdit, idEditSet] = useState<string>("");
    const [selectedValue, setSelectedValue] = useState("");
 
    const handleDelete = async (event: any, _id: any) => {
@@ -137,12 +137,12 @@ export const SearchResults = (props: SearchResultsProp): any => {
             : suggest.arr.map((t: any) => {
                  return <Display entry={t} key={"kk-" + rand()} />;
               })}
-         {idEdit === 0 ? null : (
+         {idEdit === "" ? null : (
             <SearchEdit
                selectedValue={selectedValue}
                open={open}
                onClose={handleClose}
-               id={idEdit}
+               id={idEdit.toString()}
                key={rand()}
             />
          )}

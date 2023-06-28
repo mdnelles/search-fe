@@ -21,7 +21,7 @@ export interface SearchEditProps {
    open: boolean;
    selectedValue: string;
    onClose: (value: string) => void;
-   id: number;
+   id: string;
 }
 
 export function SearchEdit(props: SearchEditProps) {
@@ -32,24 +32,16 @@ export function SearchEdit(props: SearchEditProps) {
    const titles: any = useAppSelector((state) => state.titles);
    const token = session.user.token;
 
-   const local = suggest.arr.filter(
-      (s: { code: number; name: string; body: string }) => s.code === _id
-   );
+   const local = suggest.arr.filter((s: any) => s._id === _id);
 
-   const [title, setTitle] = useState<string>(
-      !!local && !!local[0] && !!local[0].name ? local[0].name : ""
-   );
-   const [code, setCode] = useState<string>(
-      !!local && !!local[0] && !!local[0].body ? local[0].body : ""
-   );
+   const [title, setTitle] = useState<string>(local[0].subject || "");
+   const [code, setCode] = useState<string>(local[0].code || "");
 
    const handleClose = () => {
       setTitle("");
       setCode("");
       onClose(selectedValue);
    };
-
-   // - useEffect(() => {}, [title, code]);
 
    const handleEdit = async (event: any) => {
       event.preventDefault();
@@ -63,14 +55,8 @@ export function SearchEdit(props: SearchEditProps) {
          })
       );
 
-      const main: any = document.getElementById("main");
-      const data = new FormData(main);
-
-      let title = data.get("title");
-      let code = data.get("code");
-
-      title = sqlPrep(title);
-      code = sqlPrep(code);
+      setTitle(sqlPrep(title));
+      setCode(sqlPrep(code));
 
       try {
          await apiPost("/sv-search/upd_entry", {
@@ -85,48 +71,24 @@ export function SearchEdit(props: SearchEditProps) {
                msg: `Database record edited...`,
                isOpen: true,
                severity: "success",
-               duration: 5500,
+               duration: 2500,
             })
          );
          dispatch(
             setTitles(
                titles.map((ti: any) => {
-                  ti._id === _id
-                     ? { _id: ti._id, title: ti.title, code: ti.code }
-                     : ti;
+                  const { _id, title, code } = ti;
+                  ti._id === _id ? { _id, title, code } : ti;
                })
             )
          );
-      } catch (error) {
-         console.log(error);
-      }
-   };
-
-   const handleDelete = async (event: any) => {
-      event.preventDefault();
-
-      dispatch(
-         setSnackbar({
-            msg: `deleting entry ...`,
-            isOpen: true,
-            severity: "success",
-            duration: 5500,
-         })
-      );
-      try {
-         await apiPost("/sv-search/del_entry", {
-            token,
-            _id,
-         });
-         dispatch(setTitles(titles.filter((ti: any) => ti._id === _id)));
-         dispatch(setSuggest(suggest.filter((s: any) => s._id === _id)));
          dispatch(
-            setSnackbar({
-               msg: `Database record deleted...`,
-               isOpen: true,
-               severity: "success",
-               duration: 5500,
-            })
+            setSuggest(
+               suggest.map((s: any) => {
+                  const { _id, title, code } = s;
+                  s._id === _id ? { _id, title, code } : s;
+               })
+            )
          );
       } catch (error) {
          console.log(error);
@@ -155,6 +117,7 @@ export function SearchEdit(props: SearchEditProps) {
                               defaultValue={title}
                               rows='1'
                               fullWidth={true}
+                              onChange={(event) => setTitle(event.target.value)}
                            />
                         </div>
                      </Grid>
@@ -169,6 +132,7 @@ export function SearchEdit(props: SearchEditProps) {
                               rows='20'
                               defaultValue={code}
                               fullWidth={true}
+                              onChange={(event) => setCode(event.target.value)}
                            />
                         </div>
                      </Grid>
@@ -178,9 +142,6 @@ export function SearchEdit(props: SearchEditProps) {
                            <ButtonGroup variant='contained' color='secondary'>
                               <Button onClick={(event) => handleEdit(event)}>
                                  Edit Entry
-                              </Button>
-                              <Button onClick={(event) => handleDelete(event)}>
-                                 Delete
                               </Button>
                            </ButtonGroup>
                         </div>

@@ -19,11 +19,11 @@ function App() {
 
    useEffect(() => {}, [snackbar]);
 
-   useMemo(() => {
-      // keep track of entire state in local storage
-      localStorage.state = JSON.stringify(stateAll);
-      //console.log("stateAll", stateAll);
-   }, [stateAll]);
+   // useMemo(() => {
+   //    // keep track of entire state in local storage
+   //    localStorage.state = JSON.stringify(stateAll);
+   //    console.log("stateAll", stateAll);
+   // }, [stateAll]);
 
    return (
       <>
