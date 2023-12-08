@@ -32,7 +32,7 @@ export const snackbarSlice = createSlice({
             console.log(error);
          }
       },
-      clearSnackbar: (state) => initialState,
+      clearSnackbar: () => initialState,
       // Use the PayloadAction type to declare the contents of `action.payload`
    },
 });

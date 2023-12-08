@@ -24,6 +24,7 @@ export const notesSlice = createSlice({
       clearNote: (state) => {
          try {
             state = initialState;
+            console.log(state);
          } catch (error) {
             console.log(error);
          }

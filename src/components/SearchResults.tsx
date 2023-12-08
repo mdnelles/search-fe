@@ -1,19 +1,13 @@
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import { setTitles } from "../features/titles/titlesSlice";
 import { apiPost } from "../utilities/ApiRequest";
 import { rand } from "../utilities/gen";
 import { SearchEdit } from "./dialogs/SearchEdit";
-
-interface TitleType {
-   _id: string;
-   id: number;
-   title: string;
-   date1: string;
-   code: string;
-}
+import { SessionState } from "../features/session/sessionSlice";
+import { TitleType } from "../features/titles/titlesSlice";
 
 interface SearchResultsProp {
    suggest: any;
@@ -53,13 +47,17 @@ const tog = (id: number) => {
 export const SearchResults = (props: SearchResultsProp): any => {
    const { suggest = [] } = props;
    const dispatch = useAppDispatch();
-   const session: any = useAppSelector((state) => state.session);
-   const titles: any = useAppSelector((state) => state.titles.arr);
+   const session: SessionState = useAppSelector((state) => state.session);
+   const titles: TitleType[] = useAppSelector((state) => state.titles.arr);
    const token = session.user.token;
 
-   const [open, openSet] = useState(false);
-   const [idEdit, idEditSet] = useState<string>("");
-   const [selectedValue, setSelectedValue] = useState("");
+   const [open, setOpen] = useState(false);
+   const [id, setId] = useState("");
+
+   const handleEdit = (id: string) => {
+      setId(id);
+      setOpen(true);
+   };
 
    const handleDelete = async (event: any, _id: any) => {
       console.log(_id);
@@ -109,11 +107,10 @@ export const SearchResults = (props: SearchResultsProp): any => {
                   <pre>{code}</pre>
                   <Button
                      onClick={() => {
-                        idEditSet(_id);
-                        openSet(true);
+                        handleEdit(_id);
                      }}
                   >
-                     Edit!
+                     Edit
                   </Button>
                   <Button onClick={(event) => handleDelete(event, _id)}>
                      Delete
@@ -124,10 +121,14 @@ export const SearchResults = (props: SearchResultsProp): any => {
       );
    };
 
-   const handleClose = (value: string) => {
-      openSet(false);
-      setSelectedValue(value);
-   };
+   useEffect(() => {
+      // for closing
+      console.log("useEffect", open);
+   }, [open]);
+
+   useEffect(() => {
+      // when titles changes
+   }, [titles]);
 
    return (
       <>
@@ -137,14 +138,10 @@ export const SearchResults = (props: SearchResultsProp): any => {
             : suggest.arr.map((t: any) => {
                  return <Display entry={t} key={"kk-" + rand()} />;
               })}
-         {idEdit === "" ? null : (
-            <SearchEdit
-               selectedValue={selectedValue}
-               open={open}
-               onClose={handleClose}
-               id={idEdit.toString()}
-               key={rand()}
-            />
+         {!open ? (
+            <></>
+         ) : (
+            <SearchEdit open={open} setOpen={setOpen} id={id} key={rand()} />
          )}
       </>
    );

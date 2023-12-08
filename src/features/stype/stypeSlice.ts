@@ -26,14 +26,13 @@ export const stypesSlice = createSlice({
    reducers: {
       setSearchTypes: (state, action: PayloadAction<any>) => {
          try {
-            console.log(action.payload);
             state.arr = action.payload.arr;
             state.init = action.payload.init;
          } catch (error) {
             console.log(error);
          }
       },
-      clearSearchTypes: (state) => initialState,
+      clearSearchTypes: () => initialState,
    },
 });
 

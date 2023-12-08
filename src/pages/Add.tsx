@@ -4,6 +4,7 @@ import Checkbox from "@mui/material/Checkbox";
 import FormControl from "@mui/material/FormControl";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Grid from "@mui/material/Grid";
+import LinearProgress from "@mui/material/LinearProgress";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
@@ -28,39 +29,15 @@ export const Add = (): any => {
 
    const [ttype, setTtype] = useState<string>("");
    const [title, setTitle] = useState<string>("");
-   const [intro, setIntro] = useState<string>("");
    const [code, setCode] = useState<string>("");
    const [keywords, setKeywords] = useState<string[] | []>([]);
-
-   const selectChange = (event: any) => {
-      console.log(event.target.value);
-      setTtype(event.target.value);
-   };
-
-   const doChecked = (
-      event: React.ChangeEvent<HTMLInputElement>,
-      thisKeyword: { toString: () => any }
-   ) => {
-      const kw: string[] = [];
-
-      if (event.target.checked === true) {
-         const temp = [];
-         temp.push(thisKeyword.toString());
-         Array.prototype.push.apply(kw, temp);
-         setKeywords(kw);
-      } else {
-         //setKeywords(. keywords.filter(keyword => !keyword.includes(thisKeyword)));
-         keywords.forEach((e) => {
-            if (e !== thisKeyword) kw.push(e);
-         });
-         setKeywords(kw);
-      }
-   };
+   const [loading, setLoading] = useState<boolean>(false);
 
    const addEntryStart = async (
       e: React.MouseEvent<HTMLButtonElement, MouseEvent>
    ) => {
       e.preventDefault();
+      setLoading(true);
 
       dispatch(
          setSnackbar({
@@ -71,9 +48,7 @@ export const Add = (): any => {
          })
       );
 
-      setTtype(sqlPrep(ttype));
       setTitle(sqlPrep(title));
-      setIntro(sqlPrep(intro));
       setCode(sqlPrep(code));
 
       try {
@@ -85,11 +60,16 @@ export const Add = (): any => {
             token,
             ttype,
             title,
-            intro,
             code,
             kw,
          });
          console.log(res);
+         // now clear the form
+         setTtype("");
+         setTitle("");
+         setCode("");
+         setKeywords([]);
+         setLoading(false);
 
          dispatch(
             setSnackbar({
@@ -107,118 +87,112 @@ export const Add = (): any => {
    return (
       <DashboardTemplate>
          <div id='main' className='body'>
-            <h3>Add to CodeBase</h3> <br />
-            <div>
-               <Grid container spacing={1}>
-                  <Grid item xs={12}>
-                     <div style={lgBg}>
-                        <FormControl style={{ minWidth: 320 }}>
-                           <InputLabel id='ttype-label'>
-                              Primary Type
-                           </InputLabel>
-                           <Select
-                              labelId='Type'
-                              id='ttype'
-                              autoWidth={true}
-                              value={ttype}
+            <h3>Add to CodeBase</h3>
+            {!loading ? (
+               <div>
+                  <Grid container spacing={1}>
+                     <Grid item xs={12}>
+                        <div style={lgBg}>
+                           {/* <FormControl style={{ minWidth: 320 }}>
+                              <InputLabel id='ttype-label'>
+                                 Primary Type
+                              </InputLabel>
+                              <Select
+                                 labelId='Type'
+                                 id='ttype'
+                                 autoWidth={true}
+                                 value={ttype}
+                                 onChange={(event) => {
+                                    selectChange(event);
+                                 }}
+                              >
+                                 <MenuItem value={0}>Select Type</MenuItem>
+                                 {ttypeArr.map((atype: any) => (
+                                    <MenuItem
+                                       value={atype.ttype}
+                                       key={atype.id}
+                                    >
+                                       {atype.ttype}
+                                    </MenuItem>
+                                 ))}
+                              </Select>
+                           </FormControl> */}
+                        </div>
+                     </Grid>
+
+                     <Grid item xs={12}>
+                        <div style={lgBg}>
+                           <TextField
+                              id='title'
+                              label='Title'
+                              multiline
+                              defaultValue={title}
+                              rows='1'
+                              fullWidth={true}
                               onChange={(event) => {
-                                 selectChange(event);
+                                 setTitle(event.target.value);
                               }}
-                           >
-                              <MenuItem value={0}>Select Type</MenuItem>
-                              {ttypeArr.map((atype: any) => (
-                                 <MenuItem value={atype.ttype} key={atype.id}>
-                                    {atype.ttype}
-                                 </MenuItem>
-                              ))}
-                           </Select>
-                        </FormControl>
-                     </div>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                     <div style={lgBg}>
-                        <TextField
-                           id='title'
-                           label='Title'
-                           multiline
-                           defaultValue={title}
-                           rows='1'
-                           fullWidth={true}
-                           onChange={(event) => {
-                              setTitle(event.target.value);
-                           }}
-                        />
-                     </div>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                     <div style={lgBg}>
-                        <TextField
-                           id='intro'
-                           label='Intro'
-                           multiline
-                           defaultValue={intro}
-                           rows='3'
-                           fullWidth={true}
-                           onChange={(event) => {
-                              setIntro(event.target.value);
-                           }}
-                        />
-                     </div>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                     <div style={lgBg}>
-                        {ttypeArr.map((atype: any) => (
-                           <FormControlLabel
-                              key={"c-" + rand}
-                              control={
-                                 <Checkbox
-                                    onChange={(event) =>
-                                       doChecked(event, atype.ttype)
-                                    }
-                                    id={atype.ttype}
-                                    color='primary'
-                                 />
-                              }
-                              label={atype.ttype}
                            />
-                        ))}
-                     </div>
-                  </Grid>
+                        </div>
+                     </Grid>
 
-                  <Grid item xs={12}>
-                     <div style={lgBg}>
-                        <TextField
-                           id='code'
-                           label='Code'
-                           multiline
-                           rows='20'
-                           defaultValue={code}
-                           fullWidth={true}
-                           onChange={(event) => {
-                              setCode(event.target.value);
-                           }}
-                        />
-                     </div>
-                  </Grid>
+                     {/* <Grid item xs={12}>
+                        <div style={lgBg}>
+                           {ttypeArr.map((atype: any) => (
+                              <FormControlLabel
+                                 key={"c-" + rand()}
+                                 control={
+                                    <Checkbox
+                                       onChange={(event) =>
+                                          doChecked(event, atype.ttype)
+                                       }
+                                       id={atype.ttype}
+                                       color='primary'
+                                    />
+                                 }
+                                 label={atype.ttype}
+                              />
+                           ))}
+                        </div>
+                     </Grid> */}
 
-                  <Grid item xs={12}>
-                     <div style={{ padding: 5 }}>
-                        <ButtonGroup
-                           variant='contained'
-                           color='secondary'
-                           aria-label='contained primary button group'
-                        >
-                           <Button onClick={(event) => addEntryStart(event)}>
-                              Save to CodeBase
-                           </Button>
-                        </ButtonGroup>
-                     </div>
+                     <Grid item xs={12}>
+                        <div style={lgBg}>
+                           <TextField
+                              id='code'
+                              label='Code'
+                              multiline
+                              rows='10'
+                              defaultValue={code}
+                              fullWidth={true}
+                              onChange={(event) => {
+                                 setCode(event.target.value);
+                              }}
+                           />
+                        </div>
+                     </Grid>
+
+                     <Grid item xs={12}>
+                        <div style={{ padding: 5 }}>
+                           <ButtonGroup
+                              variant='contained'
+                              color='secondary'
+                              aria-label='contained primary button group'
+                           >
+                              <Button onClick={(event) => addEntryStart(event)}>
+                                 Save to CodeBase
+                              </Button>
+                           </ButtonGroup>
+                        </div>
+                     </Grid>
                   </Grid>
-               </Grid>
-            </div>
+               </div>
+            ) : (
+               <div style={{ textAlign: "center" }}>
+                  <h3>Adding to CodeBase...</h3>
+                  <LinearProgress />
+               </div>
+            )}
          </div>
       </DashboardTemplate>
    );

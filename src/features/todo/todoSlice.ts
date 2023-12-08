@@ -33,7 +33,7 @@ export const todoSlice = createSlice({
             console.log(error);
          }
       },
-      clearTodo: (state) => initialState,
+      clearTodo: () => initialState,
    },
 });
 

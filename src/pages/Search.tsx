@@ -5,11 +5,7 @@ import { SearchBox } from "../components/Autocomplete/SearchBox";
 import { SearchResults } from "../components/SearchResults";
 import { DashboardTemplate } from "./Template/DashboardTemplate";
 
-interface SearchProps {
-   text: string;
-}
-
-export const Search = (props: SearchProps): any => {
+export const Search = (): any => {
    const suggest: any = useAppSelector((state) => state.suggest);
 
    useEffect(() => {

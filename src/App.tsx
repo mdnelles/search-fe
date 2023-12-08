@@ -1,5 +1,5 @@
 import "./App.css";
-import { Suspense, useMemo, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Login } from "./pages/Login";
 import { Search } from "./pages/Search";
@@ -15,15 +15,8 @@ import { SnackbarState } from "./features/snackbar/snackbarSlice";
 
 function App() {
    const snackbar: SnackbarState = useAppSelector((state) => state.snackbar);
-   const stateAll: any = useAppSelector((state) => state);
 
    useEffect(() => {}, [snackbar]);
-
-   // useMemo(() => {
-   //    // keep track of entire state in local storage
-   //    localStorage.state = JSON.stringify(stateAll);
-   //    console.log("stateAll", stateAll);
-   // }, [stateAll]);
 
    return (
       <>
@@ -33,8 +26,8 @@ function App() {
                <Route path='/login' element={<Login />} />
 
                <Route element={<ProtectedRoute />}>
-                  <Route path='/dashboard' element={<Dashboard text={""} />} />
-                  <Route path='/search' element={<Search text={""} />} />
+                  <Route path='/dashboard' element={<Dashboard />} />
+                  <Route path='/search' element={<Search />} />
                   <Route path='/add' element={<Add />} />
                   <Route path='/todo' element={<Todo />} />
                   <Route path='/categories' element={<Categories />} />
