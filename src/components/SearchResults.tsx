@@ -1,19 +1,13 @@
 import Button from "@mui/material/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setSnackbar } from "../features/snackbar/snackbarSlice";
 import { setTitles } from "../features/titles/titlesSlice";
 import { apiPost } from "../utilities/ApiRequest";
 import { rand } from "../utilities/gen";
 import { SearchEdit } from "./dialogs/SearchEdit";
-
-interface TitleType {
-   _id: string;
-   id: number;
-   title: string;
-   date1: string;
-   code: string;
-}
+import { SessionState } from "../features/session/sessionSlice";
+import { TitleType } from "../features/titles/titlesSlice";
 
 interface SearchResultsProp {
    suggest: any;
@@ -53,13 +47,17 @@ const tog = (id: number) => {
 export const SearchResults = (props: SearchResultsProp): any => {
    const { suggest = [] } = props;
    const dispatch = useAppDispatch();
-   const session: any = useAppSelector((state) => state.session);
-   const titles: any = useAppSelector((state) => state.titles);
+   const session: SessionState = useAppSelector((state) => state.session);
+   const titles: TitleType[] = useAppSelector((state) => state.titles.arr);
    const token = session.user.token;
 
-   const [open, openSet] = useState(false);
-   const [idEdit, idEditSet] = useState<number>(0);
-   const [selectedValue, setSelectedValue] = useState("");
+   const [open, setOpen] = useState(false);
+   const [id, setId] = useState("");
+
+   const handleEdit = (id: string) => {
+      setId(id);
+      setOpen(true);
+   };
 
    const handleDelete = async (event: any, _id: any) => {
       console.log(_id);
@@ -78,7 +76,12 @@ export const SearchResults = (props: SearchResultsProp): any => {
             token,
             _id,
          });
-         dispatch(setTitles(titles.filter((ti: any) => ti._id === _id)));
+         dispatch(
+            setTitles({
+               ...titles,
+               arr: titles.filter((ti: any) => ti._id !== _id),
+            })
+         );
          dispatch(
             setSnackbar({
                msg: `Database record deleted...`,
@@ -93,22 +96,21 @@ export const SearchResults = (props: SearchResultsProp): any => {
    };
 
    const Display = (obj: TitleType | any) => {
-      const { name, body, code, _id } = obj.entry;
+      const { subject, code, _id } = obj.entry;
       return (
-         <div key={"i-" + code}>
+         <div key={"e-" + _id}>
             <div style={entryWrapper}>
                <div style={entryTitle} onClick={() => tog(code)}>
-                  {name}
+                  {subject}
                </div>
                <div style={entryBody} id={"b-" + code}>
-                  <pre>{body}</pre>
+                  <pre>{code}</pre>
                   <Button
                      onClick={() => {
-                        idEditSet(code);
-                        openSet(true);
+                        handleEdit(_id);
                      }}
                   >
-                     Edit!
+                     Edit
                   </Button>
                   <Button onClick={(event) => handleDelete(event, _id)}>
                      Delete
@@ -119,27 +121,27 @@ export const SearchResults = (props: SearchResultsProp): any => {
       );
    };
 
-   const handleClose = (value: string) => {
-      openSet(false);
-      setSelectedValue(value);
-   };
+   useEffect(() => {
+      // for closing
+      console.log("useEffect", open);
+   }, [open]);
+
+   useEffect(() => {
+      // when titles changes
+   }, [titles]);
 
    return (
       <>
          <b>Search Results</b>
          {!suggest || !suggest.arr
             ? null
-            : suggest.arr.map((t: any) => (
-                 <Display entry={t} key={"kk-" + rand()} />
-              ))}
-         {idEdit === 0 ? null : (
-            <SearchEdit
-               selectedValue={selectedValue}
-               open={open}
-               onClose={handleClose}
-               id={idEdit}
-               key={rand()}
-            />
+            : suggest.arr.map((t: any) => {
+                 return <Display entry={t} key={"kk-" + rand()} />;
+              })}
+         {!open ? (
+            <></>
+         ) : (
+            <SearchEdit open={open} setOpen={setOpen} id={id} key={rand()} />
          )}
       </>
    );

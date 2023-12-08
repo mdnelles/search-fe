@@ -1,15 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 
-interface Arr {
-   id: number;
-   title: string;
+export interface TitleType {
+   _id?: string;
+   id?: number;
+   title?: string;
+   subject?: string;
    date: string;
    code: string;
 }
 
 export interface TitlesState {
-   arr: Arr[];
+   arr: TitleType[];
    init: boolean;
 }
 
@@ -31,7 +33,7 @@ export const titlesSlice = createSlice({
             console.log(error);
          }
       },
-      clearTitles: (state) => initialState,
+      clearTitles: () => initialState,
    },
 });
 

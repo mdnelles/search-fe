@@ -1,14 +1,25 @@
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
+import LinearProgress from "@mui/material/LinearProgress";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { useState } from "react";
+import { MouseEvent, useState, useRef } from "react";
 import { setSnackbar } from "../../features/snackbar/snackbarSlice";
 import { rand, sqlPrep } from "../../utilities/gen";
 import { apiPost } from "../../utilities/ApiRequest";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import ButtonGroup from "@mui/material/ButtonGroup";
-import { setTitles } from "../../features/titles/titlesSlice";
+import {
+   TitleType,
+   TitlesState,
+   setTitles,
+} from "../../features/titles/titlesSlice";
+import {
+   SuggestState,
+   SuggestType,
+   setSuggest,
+} from "../../features/suggest/suggestSlice";
+import { SessionState } from "../../features/session/sessionSlice";
+import React from "react";
 
 const lgBg = {
    backgroundColor: "#ffffff",
@@ -18,65 +29,33 @@ const lgBg = {
 
 export interface SearchEditProps {
    open: boolean;
-   selectedValue: string;
-   onClose: (value: string) => void;
-   id: number;
+   setOpen: any;
+   id: string;
 }
 
 export function SearchEdit(props: SearchEditProps) {
-   const { open, selectedValue, onClose, id } = props;
+   const { open, setOpen, id: _id } = props;
    const dispatch = useAppDispatch();
-   const session: any = useAppSelector((state) => state.session);
-   const suggest: any = useAppSelector((state) => state.suggest);
-   const titles: any = useAppSelector((state) => state.titles);
+   const session: SessionState = useAppSelector((state) => state.session);
+   const suggest: SuggestState = useAppSelector((state) => state.suggest);
+   const titles: TitlesState = useAppSelector((state) => state.titles);
    const token = session.user.token;
 
-   const local = suggest.arr.filter(
-      (s: { code: number; name: string; body: string }) => s.code === id
-   );
+   const title: TitleType = titles.arr.filter(
+      (t: TitleType) => t._id === _id
+   )[0];
 
-   const [title, setTitle] = useState<string>(
-      !!local && !!local[0] && !!local[0].name ? local[0].name : ""
-   );
-   const [code, setCode] = useState<string>(
-      !!local && !!local[0] && !!local[0].body ? local[0].body : ""
-   );
+   const [loading, setLoading] = useState<boolean>(false);
+   const titleRef = useRef<HTMLInputElement | null>(null); // Define type as HTMLInputElement
+   const codeRef = useRef<HTMLTextAreaElement | null>(null); // Define type as HTMLTextAreaElement
 
-   const handleClose = () => {
-      setTitle("");
-      setCode("");
-      onClose(selectedValue);
-   };
-
-   // - useEffect(() => {}, [title, code]);
-
-   const editEntryStart = async (event: any) => {
-      event.preventDefault();
-
-      dispatch(
-         setSnackbar({
-            msg: `Editing entry ...`,
-            isOpen: true,
-            severity: "success",
-            duration: 5500,
-         })
-      );
-
-      const main: any = document.getElementById("main");
-      const data = new FormData(main);
-
-      let title = data.get("title");
-      let code = data.get("code");
-
-      title = sqlPrep(title);
-      code = sqlPrep(code);
-
+   const handleEdit = async () => {
       try {
          await apiPost("/sv-search/upd_entry", {
             token,
-            title,
-            code,
-            id,
+            title: titleRef.current?.value || "",
+            code: codeRef.current?.value || "",
+            _id,
          });
 
          dispatch(
@@ -84,110 +63,108 @@ export function SearchEdit(props: SearchEditProps) {
                msg: `Database record edited...`,
                isOpen: true,
                severity: "success",
-               duration: 5500,
+               duration: 2500,
             })
          );
          dispatch(
-            setTitles(
-               titles.map((ti: any) => {
-                  ti.id === id
-                     ? { id: ti.id, title: ti.title, code: ti.code }
-                     : ti;
+            setTitles({
+               arr: titles.arr.map((t: TitleType) => {
+                  if (t._id === _id) {
+                     return {
+                        ...t, // Keep the existing properties
+                        title: titleRef.current?.value || "",
+                        code: codeRef.current?.value || "",
+                     };
+                  } else {
+                     return t; // Keep the other objects unchanged
+                  }
+               }),
+               init: titles.init, // Keep the 'init' property unchanged
+            })
+         );
+
+         dispatch(
+            setSuggest(
+               suggest.arr.map((s: SuggestType) => {
+                  const { _id, title, code } = s;
+                  s._id === _id ? { _id, title, code } : s;
                })
             )
          );
+
+         setTimeout(() => {
+            setLoading(false);
+            handleClose();
+         }, 3000);
       } catch (error) {
          console.log(error);
       }
    };
 
-   const delEntryStart = async (event: any) => {
-      event.preventDefault();
-
-      dispatch(
-         setSnackbar({
-            msg: `deleting entry ...`,
-            isOpen: true,
-            severity: "success",
-            duration: 5500,
-         })
-      );
-      try {
-         await apiPost("/sv-search/del_entry", {
-            token,
-            id,
-         });
-         dispatch(setTitles(titles.filter((ti: any) => ti.id === id)));
-         dispatch(
-            setSnackbar({
-               msg: `Database record deleted...`,
-               isOpen: true,
-               severity: "success",
-               duration: 5500,
-            })
-         );
-      } catch (error) {
-         console.log(error);
-      }
+   const handleClose = () => {
+      setOpen(false);
    };
 
    return (
-      <Dialog
-         onClose={handleClose}
-         open={open}
-         key={"key" + rand()}
-         style={{ width: "90%" }}
-      >
+      <Dialog open={open} key={"key" + rand()} style={{ width: "90%" }}>
          <div style={{ padding: 10 }}>
-            <h3>Update Entry</h3> <br />
-            <div>
-               <form id='main'>
-                  <Grid container spacing={1}>
-                     <Grid item xs={12}>
-                        <div style={lgBg}>
-                           <TextField
-                              id='title'
-                              name='title'
-                              label='Title'
-                              multiline
-                              defaultValue={title}
-                              rows='1'
-                              fullWidth={true}
-                           />
-                        </div>
-                     </Grid>
+            <h3>Update Entry</h3>
+            {loading ? (
+               <LinearProgress />
+            ) : (
+               <div>
+                  <form id='main'>
+                     <Grid container spacing={1}>
+                        <Grid item xs={12}>
+                           <div style={lgBg}>
+                              <TextField
+                                 id='title'
+                                 name='title'
+                                 label='Title'
+                                 multiline
+                                 defaultValue={title.title || ""}
+                                 rows='1'
+                                 fullWidth={true}
+                                 inputRef={titleRef}
+                              />
+                           </div>
+                        </Grid>
 
-                     <Grid item xs={12}>
-                        <div style={lgBg}>
-                           <TextField
-                              id='code'
-                              name='code'
-                              label='Code'
-                              multiline
-                              rows='20'
-                              defaultValue={code}
-                              fullWidth={true}
-                           />
-                        </div>
-                     </Grid>
+                        <Grid item xs={12}>
+                           <div style={lgBg}>
+                              <TextField
+                                 id='code'
+                                 name='code'
+                                 label='Code'
+                                 multiline
+                                 rows='20'
+                                 defaultValue={title.code || ""}
+                                 fullWidth={true}
+                                 inputRef={codeRef}
+                              />
+                           </div>
+                        </Grid>
 
-                     <Grid item xs={12}>
-                        <div style={{ padding: 5 }}>
-                           <ButtonGroup variant='contained' color='secondary'>
+                        <Grid item xs={12}>
+                           <div style={{ padding: 5 }}>
                               <Button
-                                 onClick={(event) => editEntryStart(event)}
+                                 onClick={() => handleEdit()}
+                                 variant='contained'
                               >
                                  Edit Entry
+                              </Button>{" "}
+                              <Button
+                                 onClick={() => handleClose()}
+                                 variant='contained'
+                              >
+                                 Close
                               </Button>
-                              <Button onClick={(event) => delEntryStart(event)}>
-                                 Delete
-                              </Button>
-                           </ButtonGroup>
-                        </div>
+                           </div>
+                        </Grid>
                      </Grid>
-                  </Grid>
-               </form>
-            </div>
+                  </form>
+               </div>
+            )}
          </div>
       </Dialog>
    );

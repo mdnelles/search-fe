@@ -24,10 +24,6 @@ const pstyle = {
       "linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(227,227,227,1) 100%)",
 };
 
-interface DashboardProps {
-   text: string;
-}
-
 const Success = () => {
    return (
       <>
@@ -44,7 +40,7 @@ const Loading = () => {
    );
 };
 
-export const Dashboard = (props: DashboardProps) => {
+export const Dashboard = () => {
    const dispatch = useAppDispatch();
    const titles: any = useAppSelector((state) => state.titles);
    const todo: any = useAppSelector((state) => state.todo);

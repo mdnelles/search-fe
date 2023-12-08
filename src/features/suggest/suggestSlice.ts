@@ -1,15 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../redux/store";
 
-interface Arr {
-   id: number;
-   title: string;
+export interface SuggestType {
+   _id: string;
+   id?: number;
+   title?: string;
+   subject?: string;
    date: string;
    code: string;
 }
 
 export interface SuggestState {
-   arr: Arr[];
+   arr: SuggestType[];
 }
 
 const initialState: SuggestState = {
@@ -22,14 +24,13 @@ export const suggestSlice = createSlice({
 
    reducers: {
       setSuggest: (state, action: PayloadAction<any>) => {
-         console.log(action);
          try {
             state.arr = action.payload.arr;
          } catch (error) {
             console.log(error);
          }
       },
-      clearSuggest: (state) => initialState,
+      clearSuggest: () => initialState,
    },
 });
 

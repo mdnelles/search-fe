@@ -78,7 +78,7 @@ export const sessionSlice = createSlice({
          .addCase(addAsync.pending, (state) => {
             state.status = "loading";
          })
-         .addCase(addAsync.fulfilled, (state, action) => {
+         .addCase(addAsync.fulfilled, (state) => {
             state.status = "idle";
             //state.value += action.payload;
          })

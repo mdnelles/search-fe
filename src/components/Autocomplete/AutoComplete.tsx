@@ -2,7 +2,6 @@ import react, { ChangeEvent, FC, useState } from "react";
 import styled from "styled-components";
 import { useAppDispatch } from "../../redux/hooks";
 import { setSuggest } from "../../features/suggest/suggestSlice";
-import { rand } from "../../utilities/gen";
 
 import {
    AutoCompleteContainer,
@@ -15,10 +14,6 @@ const Root = styled.div`
    width: 80%;
 `;
 
-interface IData {
-   name: string;
-   code: string;
-}
 interface autoCompleteProps {
    iconColor?: string;
    inputStyle?: react.CSSProperties;
@@ -43,19 +38,16 @@ export const AutoComplete: FC<autoCompleteProps> = ({
       const value = e.target.value;
       let suggestions: any = [];
       if (value.length > 0) {
-         //const regex = new RegExp(`^${value}`, "i");
-         //suggestions = data.sort().filter((v: IData) => regex.test(v.name));
          suggestions = data
             .sort()
-            .filter((v: IData) =>
-               v.name
-                  ? v.name
+            .filter((v: any) =>
+               v.subject
+                  ? v.subject
                        .toString()
                        .toUpperCase()
                        .includes(value.toString().toUpperCase())
                   : ""
             );
-
          dispatch(
             setSuggest({
                arr: suggestions,
@@ -66,11 +58,11 @@ export const AutoComplete: FC<autoCompleteProps> = ({
       setSearch({ suggestions, text: value });
    };
 
-   const suggestionSelected = (value: IData) => {
+   const suggestionSelected = (value: any) => {
       setIsComponentVisible(false);
 
       setSearch({
-         text: value.name,
+         text: value.subject,
          suggestions: [],
       });
    };
@@ -105,13 +97,13 @@ export const AutoComplete: FC<autoCompleteProps> = ({
          <div style={{ position: "absolute", left: -2000 }}>
             {suggestions.length > 0 && isComponentVisible && (
                <AutoCompleteContainer style={optionsStyle}>
-                  {suggestions.map((item: IData) => (
-                     <AutoCompleteItem key={item.code || rand()}>
+                  {suggestions.map((item: any) => (
+                     <AutoCompleteItem key={item._id}>
                         <AutoCompleteItemButton
-                           key={item.code}
+                           key={"i" + item._id}
                            onClick={() => suggestionSelected(item)}
                         >
-                           {item.name}
+                           {item.subject}
                         </AutoCompleteItemButton>
                      </AutoCompleteItem>
                   ))}

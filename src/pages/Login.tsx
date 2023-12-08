@@ -23,11 +23,9 @@ export const Login = () => {
    const dispatch = useAppDispatch();
    const session: any = useAppSelector((state) => state.session);
    const [loading, setLoading] = React.useState(false);
-   const [success, setSuccess] = React.useState(false);
 
    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
-      setSuccess(false);
       setLoading(true);
       const data = new FormData(event.currentTarget);
 
@@ -62,11 +60,9 @@ export const Login = () => {
             dispatch(setSession({ ...session, user }));
             setTimeout(() => navigate(`/dashboard`), 500);
          }
-         setSuccess(true);
          setLoading(false);
       } else {
          setTimeout(() => {
-            setSuccess(true);
             setLoading(false);
             dispatch(
                setSnackbar({
